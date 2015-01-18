@@ -66,7 +66,7 @@ class MongoClass {
             $closed = $this->$connection->close(TRUE);
             echo $closed ?
             "<div>>close database connection successfully</div>" :
-            "<div>>failed to close database connection</div>;
+            "<div>>failed to close database connection</div>";
         }
     }
 
