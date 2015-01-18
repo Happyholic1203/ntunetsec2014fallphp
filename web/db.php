@@ -43,8 +43,7 @@ class DB {
         $this->connection = new MongoClient( $this->self['dbUrl'], [
             'username' => $this->self['dbUser'],
             'password' => $this->self['dbPass'],
-            'db'       => $this->self['dbName'],
-            'ssl'      => true
+            'db'       => $this->self['dbName']
         ]);
         echo "test2";
         // Choose database and collection
