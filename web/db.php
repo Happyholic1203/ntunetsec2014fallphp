@@ -49,8 +49,7 @@ class DB {
         // Choose database and collection
         if($this->connection) {
             print_r($this->connection->getConnections());
-            //$dbs = $this->connection->listDBs();
-            //print_r($dbs);
+            print_r($dbs = $this->connection->listDBs());
             /*
             $this->database = $this->connection
             ->MONGODB_DATABASE;
@@ -69,7 +68,7 @@ class DB {
     public function close() {
         // Close mongodb connection
         if($this->connection) {
-            $closed = $connection->close();
+            $closed = $this->$connection->close();
             //echo "connection has been terminated!\n";
         }
     }
