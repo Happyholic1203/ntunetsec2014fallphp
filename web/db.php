@@ -48,11 +48,14 @@ class DB {
         echo "test2";
         // Choose database and collection
         if($this->connection) {
+            echo "test3";
             $this->database = $this->connection->$mongodb_database;
             $this->userCollection = $this->connection->
                 $mongodb_database->$mongodb_user_collection;
             $this->recordCollection = $this->connection->
                 $mongodb_database->$mongodb_record_collection;
+            $document = $this->userCollection->findOne();
+            var_dump( $document );
         }
         echo "connection has been setup!\n";
     }
