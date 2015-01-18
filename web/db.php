@@ -40,6 +40,7 @@ class Mongo {
     // Database initialization
     public function init() {
         // Connect to mongodb
+
         $this->connection = new MongoClient( $this->self['dbUrl'], [
             'username' => $this->self['dbUser'],
             'password' => $this->self['dbPass'],
@@ -65,30 +66,25 @@ class Mongo {
         }
     }
 
-    //
-    public function isUserEmailOccupied($email) {
-        echo $email;
-        $cursor = $this->userCollection->findOne(
-            array('email' => $email));
-        if(is_null($cursor)) {
-            echo "test1";
-            return TRUE;
-        }
-        else {
-            echo "test2";
-            return FALSE;
+    public function dump() {
+        $cursor = $this->userCollection->find();
+        foreach ( $cursor as $id => $value )
+        {
+            echo "$id: ";
+            var_dump( $value );
+            // why? no results?
         }
     }
 
 }
 
-$db = new Mongo();
+echo "new db object\n";
+$db= new Mongo();
+echo "connect to db\n";
 $db->init();
-$test = $db->isUserEmailOccupied("seller@example.com");
-if($test)
-    echo "Good job";
-else
-    echo "Damn";
+echo "dump all data\n";
+$db->dump();
+echo "close connection\n";
 $db->close();
 
 ?>
