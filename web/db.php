@@ -11,7 +11,7 @@ echo "after conn";
 echo "check conn";
 if ($connection) {
     echo "why1";
-    $collection = $connection->database->User;
+    $collection = $connection->ntunetsec2014fall->User;
     echo "why2";
     $document = $collection->findOne();
     echo "why3";
