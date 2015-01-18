@@ -4,7 +4,7 @@ define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
 
-class MONGO {
+class MongoClass {
     private $self = array();
 
     private $connection = NULL;
@@ -79,7 +79,7 @@ class MONGO {
 }
 
 echo "new db object\n";
-$db = new MONGO();
+$db = new MongoClass();
 echo "connect to db\n";
 $db->init();
 echo "dump all data\n";
