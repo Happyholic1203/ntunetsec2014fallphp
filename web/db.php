@@ -129,7 +129,7 @@ class MongoClass {
 
 $newUser = array(
     'email' => 'buyer2@example.com',
-    'password' => 'test54321',
+    'password' => 'test12345',
     'type' => 'buyer'
     //'publickey' => 'keytest54321key'
     );
