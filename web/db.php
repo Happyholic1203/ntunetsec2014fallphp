@@ -10,8 +10,11 @@ $connection = new MongoClient(getenv('MongoURL'),[
 echo "after conn";
 echo "check conn";
 if ($connection) {
+    echo "why1";
     $collection = $connection->database->collectionName;
+    echo "why2";
     $document = $collection->findOne();
+    echo "why3";
     var_dump( $document );
     $closed = $connection->close();
 }
