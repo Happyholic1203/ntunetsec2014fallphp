@@ -51,7 +51,7 @@ class DB {
 
         // Choose database and collection
         if($mongo) {
-
+/*
             //print_r($this->connection->getConnections());
 
             //$db = $m->selectDB(MONGODB_DATABASE);
@@ -62,16 +62,24 @@ class DB {
                 echo "amount of documents in $collection: ";
                 echo $collection->count(), "\n";
             }
+*/
 
-/*
-            $this->database = $mongo->MONGODB_DATABASE;
+            $this->database = $this->connection
+                ->selectDB(MONGODB_DATABASE);
+
+            $collections = $this->database->listCollections();
+
+            foreach ($collections as $collection) {
+                echo "amount of documents in $collection: ";
+                echo $collection->count(), "\n";
+            }
 
             $this->userCollection = $this->database
-                ->MONGODB_USER_COLLECTION;
+                ->selectCollection(MONGODB_USER_COLLECTION);
 
             $this->recordCollection = $this->database
-                ->MONGODB_RECORD_COLLECTION;
-*/
+                ->selectCollection(MONGODB_RECORD_COLLECTION);
+
         }
         //echo "connection has been setup!\n";
     }
