@@ -46,11 +46,16 @@ class DB {
             'password' => $this->self['dbPass'],
             'db'       => $this->self['dbName']
         ]);
+
+        $mongo = $this->connection;
+
         // Choose database and collection
-        if($this->connection) {
+        if($mongo) {
+
             //print_r($this->connection->getConnections());
-            $m = $this->connection;
-            $db = $m->selectDB(MONGODB_DATABASE);
+
+            //$db = $m->selectDB(MONGODB_DATABASE);
+            $db = $mongo->MONGODB_DATABASE;
             $collections = $db->listCollections();
 
             foreach ($collections as $collection) {
@@ -58,16 +63,15 @@ class DB {
                 echo $collection->count(), "\n";
             }
 
-            /*
-            $this->database = $this->connection
-            ->MONGODB_DATABASE;
+/*
+            $this->database = $mongo->MONGODB_DATABASE;
 
             $this->userCollection = $this->database
                 ->MONGODB_USER_COLLECTION;
 
             $this->recordCollection = $this->database
                 ->MONGODB_RECORD_COLLECTION;
-            */
+*/
         }
         //echo "connection has been setup!\n";
     }
