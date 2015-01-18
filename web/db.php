@@ -116,7 +116,7 @@ class MongoClass {
 }
 
 $newUser = array(
-    'email' => 'buyer2@example.com',
+    'email' => 'buyer3@example.com',
     'password' => 'test54321',
     'type' => 'buyer'
     //'publickey' => 'keytest54321key'
