@@ -76,9 +76,10 @@ class MongoClass {
                 var_dump( $value );
                 // why? no results?
             }
+            return TRUE;
         }
-        else;
-
+        else
+            return FALSE;
     }
 }
 
@@ -87,7 +88,8 @@ $db = new MongoClass();
 echo "connect to db\n";
 $db->init();
 echo "dump all data\n";
-$db->dump("buyer@example.com");
+$test = $db->dump("buyer@example.com");
+var_dump($test);
 echo "close connection\n";
 $db->close();
 
