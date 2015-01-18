@@ -1,3 +1,3 @@
 <?php
-echo ENV['MongoUser'];
+echo getenv('MY_VAR');
 ?>
