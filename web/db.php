@@ -34,6 +34,7 @@ class MongoClass {
             if (isset($param['database']))
                 $this->self['dbName'] = $param['database'];
         }
+        echo "<div>>new db object initlization completed</div>";
     }
 
     // Initializes database connection
@@ -47,20 +48,24 @@ class MongoClass {
 
         // Choose database and collection
         if ($this->connection) {
+            echo "<div>>connect to database successfully</div>";
             $this->database = $this->connection
                 ->selectDB(MONGODB_DATABASE);
             $this->userCollection = $this->database
                 ->selectCollection(MONGODB_USER_COLLECTION);
             $this->recordCollection = $this->database
                 ->selectCollection(MONGODB_RECORD_COLLECTION);
+            echo "<div>>choose database and collections</div>";
         }
     }
 
     // Terminates database connection
     public function close() {
         // Close mongodb connection
-        if ($this->connection)
+        if ($this->connection) {
             $this->$connection->close();
+            echo "<div>>close database connection successfully</div>";
+        }
     }
 
     // Checks user email for registration
@@ -82,11 +87,11 @@ class MongoClass {
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
                 $this->userCollection->insert($registration);
-                echo "<div>added a new user acoount</div>";
+                echo "<div>>added a new user acoount</div>";
                 return TRUE;
             }
         }
-        echo "<div>bad request for user registration</div>";
+        echo "<div>>bad request for user registration</div>";
         return FALSE;
     }
 
@@ -101,11 +106,11 @@ class MongoClass {
                 $cursor = $this->userCollection->findOne($information);
 
                 if (!is_null($cursor)) {
-                    echo "<div>bad request for user login</div>";
+                    echo "<div>>bad request for user login</div>";
                     return FALSE;
                 }
                 else {
-                    echo "<div>user passed authentication</div>";
+                    echo "<div>>user passed authentication</div>";
                     return TRUE;
                 }
             }
@@ -137,7 +142,7 @@ else
     echo "<div>user account exists.</div>";
 */
 
-/* Test user login authentication */
+/* Test user login authentication*/
 echo "<div>check user login authentication</div>";
 if ($db->userLoginAuth($newUser)) {
     echo "<div>user authenticated successfully</div>";
