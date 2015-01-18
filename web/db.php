@@ -66,8 +66,9 @@ class MongoClass {
         }
     }
 
-    public function dump() {
-        $cursor = $this->userCollection->find();
+    public function dump($email) {
+        $cursor = $this->userCollection->findOne(
+            array('email' => $email ));
         foreach ( $cursor as $id => $value )
         {
             echo "$id: ";
@@ -83,7 +84,7 @@ $db = new MongoClass();
 echo "connect to db\n";
 $db->init();
 echo "dump all data\n";
-$db->dump();
+$db->dump("buyer@example.com");
 echo "close connection\n";
 $db->close();
 
