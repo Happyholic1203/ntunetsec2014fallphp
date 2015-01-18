@@ -39,12 +39,14 @@ class DB {
 
     public function init() {
         // Connect to mongodb
+        echo "test1";
         $this->connection = new MongoClient( $this->self['dbUrl'], [
             'username' => $this->self['dbUser'],
             'password' => $this->self['dbPass'],
             'db'       => $this->self['dbName'],
             'ssl'      => true
         ]);
+        echo "test2";
         // Choose database and collection
         if($this->connection) {
             $this->database = $this->connection->$mongodb_database;
