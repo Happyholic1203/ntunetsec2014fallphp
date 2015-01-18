@@ -11,11 +11,12 @@ echo "after conn";
 echo "check conn";
 if ($connection) {
     echo "why1";
-    $collection = $connection->database->collectionName;
+    $collection = $connection->database->User;
     echo "why2";
     $document = $collection->findOne();
     echo "why3";
     var_dump( $document );
+    echo "why4";
     $closed = $connection->close();
 }
 else {
