@@ -1,5 +1,5 @@
 <?php
-
+echo "test1";
 $connection = new MongoClient(getenv('MongoURL'),[
     'username' => getenv('MongoUser'),
     'password' => getenv('MongoPassword'),
@@ -16,4 +16,5 @@ else {
     echo "damn";
 }
 
+echo "test2";
 ?>
