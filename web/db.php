@@ -6,6 +6,11 @@ $connection = new MongoClient(getenv('MongoURL'),[
     'db'       => getenv('MongoDB')
 ]);
 
+echo getenv('MongoURL');
+echo getenv('MongoUser');
+echo getenv('MongoPassword');
+echo getenv('MongoDB');
+
 if ($connecion) {
     $collection = $connection->database->collectionName;
     $document = $collection->findOne();
