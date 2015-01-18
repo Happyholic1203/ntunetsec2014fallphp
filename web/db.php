@@ -40,7 +40,7 @@ class DB {
     // Database initialization
     public function init() {
         // Connect to mongodb
-        echo "test1";
+
         $this->connection = new MongoClient( $this->self['dbUrl'], [
             'username' => $this->self['dbUser'],
             'password' => $this->self['dbPass'],
@@ -48,6 +48,9 @@ class DB {
         ]);
         // Choose database and collection
         if($this->connection) {
+            $dbs = $this->connection->listDBs();
+            print_r($dbs);
+            /*
             $this->database = $this->connection
             ->MONGODB_DATABASE;
 
@@ -56,6 +59,7 @@ class DB {
 
             $this->recordCollection = $this->database
                 ->MONGODB_RECORD_COLLECTION;
+            */
         }
         //echo "connection has been setup!\n";
     }
@@ -75,6 +79,7 @@ class DB {
         {
             echo "$id: ";
             var_dump( $value );
+            // why? no results?
         }
     }
 
@@ -84,8 +89,8 @@ echo "new db object\n";
 $db= new DB();
 echo "connect to db\n";
 $db->init();
-echo "dump all data\n";
-$db->dump();
+//echo "dump all data\n";
+//$db->dump();
 echo "close connection\n";
 $db->close();
 
