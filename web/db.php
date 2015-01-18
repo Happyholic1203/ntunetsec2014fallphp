@@ -63,9 +63,7 @@ class MongoClass {
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
-            echo "test1";
             $closed = $this->$connection->close(TRUE);
-            echo "test2";
             echo $closed ?
             "<div>>close database connection successfully</div>" :
             "<div>>failed to close database connection</div>";
@@ -109,7 +107,8 @@ class MongoClass {
             if (count(array_intersect_key(array_flip($required),
                 $information)) === count($required)) {
 
-                $cursor = $this->userCollection->findOne($information);
+                $cursor = $this->userCollection->findOne($information,
+                    array('_id'));
 
                 if (is_null($cursor)) {
                     echo "<div>>bad request for user login</div>";
@@ -117,6 +116,7 @@ class MongoClass {
                 }
                 else {
                     echo "<div>>user passed authentication</div>";
+                    echo "<div>>>_id: ".$cursor['_id']."</div>";
                     // TBD return _id
                     return TRUE;
                 }
