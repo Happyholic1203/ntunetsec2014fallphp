@@ -46,7 +46,7 @@ class MongoClass {
         ]);
 
         // Choose database and collection
-        if($this->connection) {
+        if ($this->connection) {
             $this->database = $this->connection
                 ->selectDB(MONGODB_DATABASE);
             $this->userCollection = $this->database
@@ -59,7 +59,7 @@ class MongoClass {
     // Terminates database connection
     public function close() {
         // Close mongodb connection
-        if($this->connection)
+        if ($this->connection)
             $this->$connection->close();
     }
 
@@ -79,23 +79,47 @@ class MongoClass {
         if (is_array($registration) && count($registration) === 4) {
             $required = array('email', 'password', 'type', 'publickey');
 
-            if(count(array_intersect_key(array_flip($required),
+            if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
                 $this->userCollection->insert($registration);
-                echo "<div>add a new user acoount</div>";
+                echo "<div>added a new user acoount</div>";
                 return TRUE;
             }
         }
         echo "<div>bad request for user registration</div>";
         return FALSE;
     }
+
+    // Handles user login authentication
+    public function userLoginAuth($information) {
+        if (is_array($information) && count($information) === 3) {
+            $required = array('email', 'password', 'type');
+
+            if (count(array_intersect_key(array_flip($required),
+                $information)) === count($required)) {
+
+                $cursor = $this->userCollection->findOne($information);
+
+                if (!is_null($cursor)) {
+                    echo "<div>bad request for user login</div>";
+                    return FALSE;
+                }
+                else {
+                    echo "<div>user passed authentication</div>";
+                    return TRUE;
+                }
+            }
+        }
+        echo "<div>bad request for user login</div>";
+        return FALSE;
+    }
 }
 
 $newUser = array(
     'email' => 'buyer2@example.com',
-    'password' => 'test12345',
-    'type' => 'buyer',
-    'publickey' => 'keytest12345key'
+    'password' => 'test54321',
+    'type' => 'buyer'
+    //'publickey' => 'keytest54321key'
     );
 
 
@@ -104,12 +128,23 @@ $db = new MongoClass();
 echo "<div>connect to db</div>";
 $db->init();
 
+/* Test user registration
 echo "<div>check user email for registration</div>";
 if(!$db->isUserEmailOccupied($newUser['email'])) {
     $db->userRegistration($newUser);
 }
 else
     echo "<div>user account exists.</div>";
+*/
+
+/* Test user login authentication */
+echo "<div>check user login authentication</div>";
+if ($db->userLoginAuth($newUser)) {
+    echo "<div>user authenticated successfully</div>";
+}
+else
+    echo "<div>user authenticated unsuccessfully</div>";
+
 
 echo "<div>close connection</div>";
 $db->close();
