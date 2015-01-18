@@ -47,10 +47,8 @@ class DB {
             'db'       => $this->self['dbName']
         ]);
 
-        $mongo = $this->connection;
-
         // Choose database and collection
-        if($mongo) {
+        if($this->connection) {
 /*
             //print_r($this->connection->getConnections());
 
@@ -66,13 +64,6 @@ class DB {
 
             $this->database = $this->connection
                 ->selectDB(MONGODB_DATABASE);
-
-            $collections = $this->database->listCollections();
-
-            foreach ($collections as $collection) {
-                echo "amount of documents in $collection: ";
-                echo $collection->count(), "\n";
-            }
 
             $this->userCollection = $this->database
                 ->selectCollection(MONGODB_USER_COLLECTION);
@@ -109,8 +100,8 @@ echo "new db object\n";
 $db= new DB();
 echo "connect to db\n";
 $db->init();
-//echo "dump all data\n";
-//$db->dump();
+echo "dump all data\n";
+$db->dump();
 echo "close connection\n";
 $db->close();
 
