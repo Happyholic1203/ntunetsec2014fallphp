@@ -2,12 +2,12 @@
 echo "test1";
 echo getenv('MongoURL');
 echo getenv('MongoUser');
-echo getenv('MongoPassword');
+echo getenv('MongoPass');
 echo getenv('MongoDB');
 
 $connection = new MongoClient(getenv('MongoURL'),[
     'username' => getenv('MongoUser'),
-    'password' => getenv('MongoPassword'),
+    'password' => getenv('MongoPass'),
     'db'       => getenv('MongoDB')
 ]);
 
