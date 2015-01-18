@@ -50,7 +50,7 @@ class DB {
         if($this->connection) {
             //print_r($this->connection->getConnections());
             $m = $this->connection;
-            $db = $m->selectDB(MONGODB_USER_COLLECTION);
+            $db = $m->selectDB(MONGODB_DATABASE);
             $collections = $db->listCollections();
 
             foreach ($collections as $collection) {
