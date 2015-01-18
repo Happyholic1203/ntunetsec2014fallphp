@@ -1,15 +1,16 @@
 <?php
 echo "test1";
+echo getenv('MongoURL');
+echo getenv('MongoUser');
+echo getenv('MongoPassword');
+echo getenv('MongoDB');
+
 $connection = new MongoClient(getenv('MongoURL'),[
     'username' => getenv('MongoUser'),
     'password' => getenv('MongoPassword'),
     'db'       => getenv('MongoDB')
 ]);
 
-echo getenv('MongoURL');
-echo getenv('MongoUser');
-echo getenv('MongoPassword');
-echo getenv('MongoDB');
 
 if ($connecion) {
     $collection = $connection->database->collectionName;
