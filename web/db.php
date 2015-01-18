@@ -37,10 +37,9 @@ class MongoClass {
         }
     }
 
-    // Database initialization
+    // Initializes database connection
     public function init() {
         // Connect to mongodb
-
         $this->connection = new MongoClient( $this->self['dbUrl'], [
             'username' => $this->self['dbUser'],
             'password' => $this->self['dbPass'],
@@ -58,7 +57,7 @@ class MongoClass {
         }
     }
 
-    // Database termination
+    // Terminates database connection
     public function close() {
         // Close mongodb connection
         if($this->connection) {
@@ -66,31 +65,54 @@ class MongoClass {
         }
     }
 
-    public function dump($email) {
+    // Checks user email for registration
+    public function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
         if (!is_null($cursor)) {
-            foreach ( $cursor as $id => $value )
-            {
-                echo "$id: ";
-                var_dump( $value );
-                // why? no results?
-            }
             return TRUE;
         }
         else
             return FALSE;
     }
+
+    // Handles user registration
+    public function userRegistration($registration){
+        if (is_array($registration) && count($registration) === 4) {
+            $required = array('email', 'password', 'type', 'publickey');
+            if(count(array_intersect_key(array_flip($required),
+                $registration)) === count($required)) {
+                $this->userCollection->insert($doc);
+                echo "<div>add a new user acoount</div>";
+                return TRUE;
+            }
+        }
+        echo "<div>bad request for user registration</div>";
+        return FALSE;
+    }
 }
 
-echo "new db object\n";
+$newUser = array(
+    'email' => 'buyer@example.com',
+    'password' => 'test12345',
+    'type' => 'buyer',
+    'publickey' => 'keytest12345key'
+    );
+
+
+echo "<div>new db object</div>";
 $db = new MongoClass();
-echo "connect to db\n";
+echo "<div>connect to db</div>";
 $db->init();
-echo "dump all data\n";
-$test = $db->dump("buyer1@example.com");
-var_dump($test);
-echo "close connection\n";
+
+echo "<div>check user email for registration</div>";
+if(!$db->isUserEmailOccupied($newUser['email'])) {
+    $db->userRegistration($newUser);
+}
+else
+    echo "<div>User account exists.</div>";
+
+echo "<div>close connection</div>";
 $db->close();
 
 ?>
