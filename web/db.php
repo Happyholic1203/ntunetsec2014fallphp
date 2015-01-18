@@ -46,20 +46,18 @@ class DB {
             'password' => $this->self['dbPass'],
             'db'       => $this->self['dbName']
         ]);
-        echo "test2";
         // Choose database and collection
         if($this->connection) {
             $this->database = $this->connection
             ->MONGODB_DATABASE;
-            echo "test3";
+
             $this->userCollection = $this->database
                 ->MONGODB_USER_COLLECTION;
-            echo "test4";
+
             $this->recordCollection = $this->database
                 ->MONGODB_RECORD_COLLECTION;
-            echo "test5";
         }
-        echo "connection has been setup!\n";
+        //echo "connection has been setup!\n";
     }
 
     // Database termination
@@ -67,15 +65,27 @@ class DB {
         // Close mongodb connection
         if($this->connection) {
             $closed = $connection->close();
-            echo "connection has been terminated!\n";
+            //echo "connection has been terminated!\n";
         }
     }
+
+    public function dump() {
+        $cursor = $this->userCollection->find();
+        foreach ( $cursor as $id => $value )
+        {
+            echo "$id: ";
+            var_dump( $value );
+        }
+    }
+
 }
 
 echo "new db object\n";
 $db= new DB();
 echo "connect to db\n";
 $db->init();
+echo "dump all data\n";
+$db->dump();
 echo "close connection\n";
 $db->close();
 
