@@ -48,8 +48,8 @@ class DB {
         ]);
         // Choose database and collection
         if($this->connection) {
-            print_r($this->connection->getConnections());
-            print_r($dbs = $this->connection->listDBs());
+            //print_r($this->connection->getConnections());
+            print_r($this->connection->listDBs());
             /*
             $this->database = $this->connection
             ->MONGODB_DATABASE;
