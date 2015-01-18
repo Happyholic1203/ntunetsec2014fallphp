@@ -91,6 +91,7 @@ class MongoClass {
                 $this->userCollection->insert($registration);
 
                 echo "<div>>added a new user acoount</div>";
+                echo "<div>>>_id: ".$registration['_id']."</div>";
                 // TBD return _id
                 return TRUE;
             }
@@ -128,10 +129,10 @@ class MongoClass {
 }
 
 $newUser = array(
-    'email' => 'buyer2@example.com',
-    'password' => 'test12345',
-    'type' => 'buyer'
-    //'publickey' => 'keytest54321key'
+    'email' => 'seller2@example.com',
+    'password' => 'test54321',
+    'type' => 'seller',
+    'publickey' => 'keytest54321key'
     );
 
 
@@ -140,23 +141,23 @@ $db = new MongoClass();
 echo "<div>connect to db</div>";
 $db->init();
 
-/* Test user registration
+/* Test user registration */
 echo "<div>check user email for registration</div>";
 if(!$db->isUserEmailOccupied($newUser['email'])) {
     $db->userRegistration($newUser);
 }
 else
     echo "<div>user account exists.</div>";
-*/
 
-/* Test user login authentication*/
+
+/* Test user login authentication
 echo "<div>check user login authentication</div>";
 if ($db->userLoginAuth($newUser)) {
     echo "<div>user authenticated successfully</div>";
 }
 else
     echo "<div>user authenticated unsuccessfully</div>";
-
+*/
 
 echo "<div>close connection</div>";
 $db->close();
