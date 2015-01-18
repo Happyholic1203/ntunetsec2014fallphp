@@ -88,7 +88,7 @@ $db = new MongoClass();
 echo "connect to db\n";
 $db->init();
 echo "dump all data\n";
-$test = $db->dump("buyer@example.com");
+$test = $db->dump("buyer1@example.com");
 var_dump($test);
 echo "close connection\n";
 $db->close();
