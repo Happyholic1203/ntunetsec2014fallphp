@@ -1,12 +1,12 @@
 <?php
 
+define("MONGODB_DATABASE", 'ntunetsec2014fall');
+define("MONGODB_USER_COLLECTION", 'User');
+define("MONGODB_RECORD_COLLECTION", 'Record');
+
 class DB {
 
     private $self = array();
-
-    private $mongodb_database = 'ntunetsec2014fall';
-    private $mongodb_user_collection = 'User';
-    private $mongodb_record_collection = 'Record';
 
     private $connection = NULL;
     private $database = NULL;
@@ -48,12 +48,14 @@ class DB {
         echo "test2";
         // Choose database and collection
         if($this->connection) {
-            $this->database = $this->connection->$mongodb_database;
+            $this->database = $this->connection->MONGODB_DATABASE;
             echo "test3";
-            $this->userCollection = $this->connection->
-                $mongodb_database->$mongodb_user_collection;
-            $this->recordCollection = $this->connection->
-                $mongodb_database->$mongodb_record_collection;
+            $this->userCollection = $this->database
+                ->MONGODB_USER_COLLECTION;
+            echo "test4";
+            $this->recordCollection = $this->database
+                ->MONGODB_RECORD_COLLECTION;
+            echo "test5";
             $document = $this->userCollection->findOne();
             var_dump( $document );
         }
