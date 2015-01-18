@@ -67,6 +67,7 @@ class Mongo {
 
     //
     public function isUserEmailOccupied($email) {
+        echo $email;
         $cursor = $this->userCollection->findOne(
             array('email' => $email));
         if(is_null($cursor)) {
