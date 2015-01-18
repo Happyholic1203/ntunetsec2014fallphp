@@ -63,7 +63,7 @@ class MongoClass {
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
-            $this->$connection->close();
+            $this->$connection->close(TRUE);
             echo "<div>>close database connection successfully</div>";
         }
     }
@@ -87,7 +87,9 @@ class MongoClass {
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
                 $this->userCollection->insert($registration);
+
                 echo "<div>>added a new user acoount</div>";
+                // TBD return _id
                 return TRUE;
             }
         }
@@ -105,12 +107,13 @@ class MongoClass {
 
                 $cursor = $this->userCollection->findOne($information);
 
-                if (!is_null($cursor)) {
+                if (is_null($cursor)) {
                     echo "<div>>bad request for user login</div>";
                     return FALSE;
                 }
                 else {
                     echo "<div>>user passed authentication</div>";
+                    // TBD return _id
                     return TRUE;
                 }
             }
@@ -122,7 +125,7 @@ class MongoClass {
 
 $newUser = array(
     'email' => 'buyer3@example.com',
-    'password' => 'test54321',
+    'password' => 'test543210',
     'type' => 'buyer'
     //'publickey' => 'keytest54321key'
     );
