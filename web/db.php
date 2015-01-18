@@ -5,7 +5,6 @@ define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
 
 class DB {
-
     private $self = array();
 
     private $connection = NULL;
@@ -13,6 +12,7 @@ class DB {
     private $userCollection = NULL;
     private $recordCollection = NULL;
 
+    // Class constructor
     public function __construct($param) {
         // Setup default variables
         $this->self['dbUrl']  = getenv('MongoURL');
@@ -37,6 +37,7 @@ class DB {
         }
     }
 
+    // Database initialization
     public function init() {
         // Connect to mongodb
         echo "test1";
@@ -57,11 +58,13 @@ class DB {
                 ->MONGODB_RECORD_COLLECTION;
             echo "test5";
             $document = $this->userCollection->findOne();
-            var_dump( $document );
+            echo "test6";
+            var_dump($document);
         }
         echo "connection has been setup!\n";
     }
 
+    // Database termination
     public function close() {
         // Close mongodb connection
         if($this->connection) {
@@ -73,10 +76,10 @@ class DB {
 }
 
 echo "new db object\n";
-$test = new DB();
+$db= new DB();
 echo "connect to db\n";
-$test->init();
+$db->init();
 echo "close connection\n";
-$test->close();
+$db->close();
 
 ?>
