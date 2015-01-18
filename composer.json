@@ -1,8 +1,8 @@
 {
   "require" : {
+    "ext-mongo": "*",
     "silex/silex": "~1.1",
-    "monolog/monolog": "~1.7",
-    "ext-mongo": "*"
+    "monolog/monolog": "~1.7"
   },
   "require-dev": {
     "heroku/heroku-buildpack-php": "*"
