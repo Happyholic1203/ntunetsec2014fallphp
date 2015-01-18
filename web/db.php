@@ -71,8 +71,8 @@ class DB {
 echo "new db object\n";
 $test = new DB();
 echo "connect to db\n";
-$test.init();
+$test->init();
 echo "close connection\n";
-$test.close();
+$test->close();
 
 ?>
