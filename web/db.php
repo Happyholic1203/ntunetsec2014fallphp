@@ -4,7 +4,7 @@ define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
 
-class Mongo {
+class DB {
     private $self = array();
 
     private $connection = NULL;
@@ -62,7 +62,7 @@ class Mongo {
     public function close() {
         // Close mongodb connection
         if($this->connection) {
-            $closed = $this->$connection->close();
+            $this->$connection->close();
         }
     }
 
@@ -79,7 +79,7 @@ class Mongo {
 }
 
 echo "new db object\n";
-$db= new Mongo();
+$db = new DB();
 echo "connect to db\n";
 $db->init();
 echo "dump all data\n";
