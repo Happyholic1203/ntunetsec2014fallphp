@@ -69,10 +69,14 @@ class Mongo {
     public function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
             array('email' => $email));
-        if ($cursor !== NULL)
+        if(is_null($cursor)) {
+            echo "test1";
             return TRUE;
-        else
+        }
+        else {
+            echo "test2";
             return FALSE;
+        }
     }
 
 }
@@ -85,6 +89,5 @@ if($test)
 else
     echo "Damn";
 $db->close();
-
 
 ?>
