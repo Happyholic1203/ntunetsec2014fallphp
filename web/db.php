@@ -58,7 +58,6 @@ class DB {
             $this->recordCollection = $this->database
                 ->MONGODB_RECORD_COLLECTION;
             echo "test5";
-            var_dump($this->userCollection->findOne());
         }
         echo "connection has been setup!\n";
     }
