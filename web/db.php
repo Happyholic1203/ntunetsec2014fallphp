@@ -49,7 +49,14 @@ class DB {
         // Choose database and collection
         if($this->connection) {
             //print_r($this->connection->getConnections());
-            print_r($this->connection->listDBs());
+            $dbases = $this->connection->listDBs();
+            $num = 0;
+            foreach ($dbases['databases'] as $dbs) {
+                $num++;
+                $dbname = $dbs['name'];
+                echo "<br> $num. $dbname";
+            }
+
             /*
             $this->database = $this->connection
             ->MONGODB_DATABASE;
