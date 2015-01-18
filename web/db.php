@@ -63,8 +63,10 @@ class MongoClass {
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
-            $this->$connection->close(TRUE);
-            echo "<div>>close database connection successfully</div>";
+            $closed = $this->$connection->close(TRUE);
+            echo $closed ?
+            "<div>>close database connection successfully</div>" :
+            "<div>>failed to close database connection</div>;
         }
     }
 
