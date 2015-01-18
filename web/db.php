@@ -49,12 +49,13 @@ class DB {
         // Choose database and collection
         if($this->connection) {
             //print_r($this->connection->getConnections());
-            $dbases = $this->connection->listDBs();
-            $num = 0;
-            foreach ($dbases['databases'] as $dbs) {
-                $num++;
-                $dbname = $dbs['name'];
-                echo "<br> $num. $dbname";
+            $m = $this->connection;
+            $db = $m->selectDB(MONGODB_USER_COLLECTION);
+            $collections = $db->listCollections();
+
+            foreach ($collections as $collection) {
+                echo "amount of documents in $collection: ";
+                echo $collection->count(), "\n";
             }
 
             /*
