@@ -10,8 +10,10 @@ if ($connecion) {
     $collection = $connection->database->collectionName;
     $document = $collection->findOne();
     var_dump( $document );
+    $closed = $connection->close();
 }
-
-$closed = $connection->close();
+else {
+    echo "damn";
+}
 
 ?>
