@@ -49,12 +49,13 @@ class DB {
         echo "test2";
         // Choose database and collection
         if($this->connection) {
-            $this->database = $this->connection->MONGODB_DATABASE;
+            $this->database = ($this->connection)
+                ->MONGODB_DATABASE;
             echo "test3";
-            $this->userCollection = $this->database
+            $this->userCollection = ($this->database)
                 ->MONGODB_USER_COLLECTION;
             echo "test4";
-            $this->recordCollection = $this->database
+            $this->recordCollection = ($this->database)
                 ->MONGODB_RECORD_COLLECTION;
             echo "test5";
             var_dump(($this->userCollection)->findOne());
