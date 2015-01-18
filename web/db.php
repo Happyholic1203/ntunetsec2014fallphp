@@ -59,6 +59,8 @@ class DB {
             echo "test5";
             $document = $this->userCollection->findOne();
             echo "test6";
+            echo $document();
+
             var_dump($document);
         }
         echo "connection has been setup!\n";
@@ -72,7 +74,6 @@ class DB {
             echo "connection has been terminated!\n";
         }
     }
-
 }
 
 echo "new db object\n";
