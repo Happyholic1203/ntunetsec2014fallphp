@@ -22,18 +22,17 @@ class MongoClass {
 
         // User-defined variables
         if (is_array($param)) {
-            if (isset($param['url'])) {
+            if (isset($param['url']))
                 $this->self['dbUrl'] = $param['url'];
-            }
-            if (isset($param['user'])) {
+
+            if (isset($param['user']))
                 $this->self['dbUser'] = $param['user'];
-            }
-            if (isset($param['pass'])) {
+
+            if (isset($param['pass']))
                 $this->self['dbPass'] = $param['pass'];
-            }
-            if (isset($param['database'])) {
+
+            if (isset($param['database']))
                 $this->self['dbName'] = $param['database'];
-            }
         }
     }
 
@@ -60,29 +59,29 @@ class MongoClass {
     // Terminates database connection
     public function close() {
         // Close mongodb connection
-        if($this->connection) {
+        if($this->connection)
             $this->$connection->close();
-        }
     }
 
     // Checks user email for registration
     public function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
-        if (!is_null($cursor)) {
+
+        if (!is_null($cursor))
             return TRUE;
-        }
         else
             return FALSE;
     }
 
     // Handles user registration
-    public function userRegistration($registration){
+    public function userRegistration($registration) {
         if (is_array($registration) && count($registration) === 4) {
             $required = array('email', 'password', 'type', 'publickey');
+
             if(count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
-                $this->userCollection->insert($doc);
+                $this->userCollection->insert($registration);
                 echo "<div>add a new user acoount</div>";
                 return TRUE;
             }
