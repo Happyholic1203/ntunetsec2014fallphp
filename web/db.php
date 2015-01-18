@@ -69,14 +69,17 @@ class MongoClass {
     public function dump($email) {
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
-        foreach ( $cursor as $id => $value )
-        {
-            echo "$id: ";
-            var_dump( $value );
-            // why? no results?
+        if (!is_null($cursor)) {
+            foreach ( $cursor as $id => $value )
+            {
+                echo "$id: ";
+                var_dump( $value );
+                // why? no results?
+            }
         }
-    }
+        else;
 
+    }
 }
 
 echo "new db object\n";
