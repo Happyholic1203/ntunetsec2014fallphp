@@ -93,7 +93,7 @@ class MongoClass {
 }
 
 $newUser = array(
-    'email' => 'buyer@example.com',
+    'email' => 'buyer2@example.com',
     'password' => 'test12345',
     'type' => 'buyer',
     'publickey' => 'keytest12345key'
@@ -110,7 +110,7 @@ if(!$db->isUserEmailOccupied($newUser['email'])) {
     $db->userRegistration($newUser);
 }
 else
-    echo "<div>User account exists.</div>";
+    echo "<div>user account exists.</div>";
 
 echo "<div>close connection</div>";
 $db->close();
