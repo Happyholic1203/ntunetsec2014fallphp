@@ -63,7 +63,9 @@ class MongoClass {
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
+            echo "test1";
             $closed = $this->$connection->close(TRUE);
+            echo "test2";
             echo $closed ?
             "<div>>close database connection successfully</div>" :
             "<div>>failed to close database connection</div>";
@@ -126,8 +128,8 @@ class MongoClass {
 }
 
 $newUser = array(
-    'email' => 'buyer3@example.com',
-    'password' => 'test543210',
+    'email' => 'buyer2@example.com',
+    'password' => 'test54321',
     'type' => 'buyer'
     //'publickey' => 'keytest54321key'
     );
