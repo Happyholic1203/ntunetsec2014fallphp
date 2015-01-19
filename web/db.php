@@ -151,19 +151,30 @@ class MongoClass {
                     }
                     // Add basic user points
                     $registration['points'] = '0';
+
                     // Insert a new 'User' document
                     try {
                         $result = $this->userCollection->insert($registration,
                             array("w" => 1));
-                        print_r($result);
+                    }
+                    catch (MongoCursorException $e) {
+                        if (DEBUG) {
+                            echo "<div>>>operation error: $e</div>";
+                        }
+                    }
+
+                    if (is_null($result['err'])) {
                         if (DEBUG) {
                             echo "<div>>>added a new user acoount</div>";
                         }
                         return $registration['_id'];
                     }
-                    catch (MongoCursorException $e) {
+                    else {
                         if (DEBUG) {
-                            echo "<div>>>operation error: $e</div>";
+                            echo "<div>>>failed to add a new user acoount".
+                                 "</div>";
+                            echo "<div>>>error message: ".$result['err'].
+                                 "</div>";
                         }
                     }
                 }
