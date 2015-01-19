@@ -460,7 +460,7 @@ class MongoClass {
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = int($userCurrentPoints) + int($points);
-
+        echo "<div>userCurrentPoints: $userCurrentPoints</div>";
         // Update user points
         try {
             $result = $this->userCollection->update(
