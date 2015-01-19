@@ -6,7 +6,7 @@
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
-define("DEBUG", TRUE);
+define("DEBUG", FALSE);
 
 /**
  * A class for handling interaction with MongoDB
@@ -585,18 +585,20 @@ if (DEBUG) { // MongoClass Testing Procedure
         'type' => 'buyer',
         'publickey' => 'keytesting4444key'
         );
+    ///
     $newSeller = array(
         'email' => 'seller4@example.com',
         'password' => 'testing4444',
         'type' => 'seller',
         'publickey' => 'keytesting4444key'
         );
+    ///
     $loginUser = array(
         'email' => 'buyer4@example.com',
         'password' => 'testing4444',
         'type' => 'buyer'
         );
-    //*/
+    ///
     $userCollectPointsData = array(
         'buyerid'   => '54bba48e7b3fe953008b4567',
         'sellerid'  => '54bbbaffc1293252008b4567',
@@ -604,6 +606,7 @@ if (DEBUG) { // MongoClass Testing Procedure
         'numPoints' => '20',
         'timestamp' => '1421668108'
         );
+    ///
     $userRedeemPointsData = array(
         'buyerid'   => '54bba48e7b3fe953008b4567',
         'sellerid'  => '54bbbaffc1293252008b4567',
@@ -611,6 +614,7 @@ if (DEBUG) { // MongoClass Testing Procedure
         'numPoints' => '70',
         'timestamp' => '1421668108'
         );
+    *///
 
     /* Testing database connection
     *///
@@ -651,10 +655,10 @@ if (DEBUG) { // MongoClass Testing Procedure
     //*/
 
     /* Test redemption of reward points
-    *///
+    ///
     echo "<div>&nbsp;</div><div>[Step 06] user redeems reward points</div>";
     $points = $db->userRedeemPoints($userRedeemPointsData);
-    if ($points)
+    if (intval($points) >= 0)
         echo "<div>>>seller published points: ".$points."</div>";
     else
         echo "<div>>>failed to redeem reward points</div>";
