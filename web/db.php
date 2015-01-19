@@ -137,13 +137,14 @@ class MongoClass {
         // Check input registration array
         if (is_array($registration) && count($registration) === 4) {
             $required = array('email', 'password', 'type', 'publickey');
-
+            echo "<div>>>>>>test1</div>";
             // Check input registration array keys
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
-
+                echo "<div>>>>>>test2</div>";
                 // Check user email address
                 if (!isUserEmailOccupied($registration['email'])) {
+                    echo "<div>>>>>>test3</div>";
                     if (DEBUG) {
                         echo "<div>>>new user email address is verified".
                              "</div>";
@@ -346,7 +347,7 @@ class MongoClass {
 }
 
 // MongoClass Testing Procedure
-// testing data
+// Testing user data
 $newBuyer = array(
     'email' => 'buyer3@example.com',
     'password' => 'testing0000',
@@ -360,7 +361,7 @@ $newSeller = array(
     'publickey' => 'keytesting1111key'
     );
 
-/* Test database connection
+/* Testing database connection
 *///
 echo "<div>[Step 01] generate a new db object</div>";
 $db = new MongoClass();
@@ -368,7 +369,7 @@ echo "<div>[Step 02] connect to database</div>";
 $db->init();
 //*/
 
-/* Test user registration
+/* Testing user registration
 *///
 echo "<div>[Step 03] user registration</div>";
 $uid = $db->userRegistration($newBuyer);
