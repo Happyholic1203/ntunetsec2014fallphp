@@ -655,15 +655,15 @@ if (TESTING) { // MongoClass Testing Procedure
         );
     *///
 
-    /* Testing opening database connection
-    ///
+    /* Test opening database connection
+    *///
     echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
     $db = new MongoClass();
     echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
     $db->init();
     //*/
 
-    /* Testing user registration
+    /* Test user registration
     ///
     echo "<div>&nbsp;</div><div>[Step 03] user registration</div>";
     $uid = $db->userRegistration($newBuyer);
@@ -703,8 +703,18 @@ if (TESTING) { // MongoClass Testing Procedure
         echo "<div>>>failed to redeem reward points</div>";
     //*/
 
+    /* Test fetching user publickey
+    *///
+    echo "<div>&nbsp;</div><div>[Step 07] user publickey</div>";
+    $publickey = $db->getUserPublickey($uid);
+    if (!is_null($publickey))
+        echo "<div>>>user publickey: ".$publickey."</div>";
+    else
+        echo "<div>>>failed to fetch user publickey</div>";
+    //*/
+
     /* Testing terminating database connection
-    ///
+    *///
     echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
     $db->close();
     //*/
