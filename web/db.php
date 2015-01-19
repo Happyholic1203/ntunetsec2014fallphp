@@ -25,7 +25,7 @@ class MongoClass {
     /**
      * Class constructor
      * @param array $param Consists of database variables, including url,
-     *                     username, password, database name for connection.
+     *                        username, password, database name for connection.
      */
     public function __construct($param) {
         // Setup default database variables
@@ -399,7 +399,7 @@ $newSeller = array(
     'publickey' => 'keytesting4444key'
     );
 $loginUser = array(
-    'email' => 'buyer1@example.com',
+    'email' => 'buyer4@example.com',
     'password' => 'testing4444',
     'type' => 'buyer'
     );
@@ -423,11 +423,11 @@ else
 //*/
 
 /* Test user login authentication
-*///
+//*/
 echo "<div>[Step 04] user login authentication</div>";
 $uid = $db->userLoginAuth($loginUser);
 if ($uid)
-    echo "<div>>>successful user authentication</div>";
+    echo "<div>>>new user id is: ".$uid."</div>";
 else
     echo "<div>>>unsuccessful user authentication</div>";
 //*/
