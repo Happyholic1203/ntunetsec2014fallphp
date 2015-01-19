@@ -654,6 +654,8 @@ if (TESTING) { // MongoClass Testing Procedure
         'timestamp' => '1421668108'
         );
     *///
+    $uid = '54bba48e7b3fe953008b4567';
+    ///
 
     /* Test opening database connection
     *///
