@@ -317,7 +317,7 @@ class MongoClass {
         $buyerCurrentPoints = getUserAvailablePoints($request['buyerid']);
         $sellerCurrentPoints = getUserAvailablePoints($request['sellerid']);
 
-        // Validate the request points in redemption
+        // Validate the request points in red
         if ($buyerCurrentPoints  > int($request['numPoints']) &&
             $sellerCurrentPoints > int($request['numPoints'])) {
             return TRUE;
@@ -375,6 +375,7 @@ class MongoClass {
      */
     private function handleUserPoints($param) {
         if ($param['action'] === 'add') { // Collection
+            echo "<div>>>>>>>test1</div>";
             // Update points: increasing
             $buyerAvailablePoints = increasePoints($param['buyerid'],
                 $param['numPoints']);
@@ -387,6 +388,7 @@ class MongoClass {
             return $buyerAvailablePoints; // return points to buyer
         }
         elseif ($param['action'] === 'redeem') { // Redemption
+            echo "<div>>>>>>>test2</div>";
             // Update points: decreasing
             $buyerAvailablePoints = decreasePoints($param['buyerid'],
                 $param['numPoints']);
@@ -399,6 +401,7 @@ class MongoClass {
             return $sellerPublishedPoints; // return points to seller
         }
         else {
+            echo "<div>>>>>>>test3</div>";
             // TBD: Error handler
             if (DEBUG) {
                 echo "<div>>>unsupported action occurs</div>";
