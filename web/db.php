@@ -536,7 +536,7 @@ class MongoClass {
      * @param  string $id_string User id string
      * @param  number $points    User points
      * @return number            Returns new available or published points to
-     *                               user
+     *                               user.
      */
     private function decreasePoints($id_string, $points) {
 
@@ -571,6 +571,44 @@ class MongoClass {
                      "</div>";
                 echo "<div>>>>>>>error message: ".$result['err']."</div>";
             }
+        }
+    }
+
+
+    /**
+     * Fetch user current publickey
+     * @param  string $id_string User id string
+     * @return string            Returns user current publickey if operating
+     *                               successfully, otherwise returns NULL.
+     */
+    public function getUserPublickey($id_string) {
+
+        $mongo_id = new MongoID($id_string);
+
+        // Get user current publickey
+        try {
+            $result = $this->userCollection->findOne(
+                array('_id' => $mongo_id ));
+        }
+        catch (MongoConnectionException $e) {
+            if (DEBUG) {
+                echo "<div>>>operation error: $e</div>";
+            }
+        }
+
+        // Check operation result
+        if (!is_null($result)) {
+            if (DEBUG) {
+                echo "<div>>>fetch user current publickey successfully".
+                     "</div>";
+            }
+            return $result['publickey'];
+        }
+        else {
+            if (DEBUG) {
+                echo "<div>>>failed to fetch user current publickey</div>";
+            }
+            return NULL;
         }
     }
 }
