@@ -25,7 +25,8 @@ class MongoClass {
     /**
      * Class constructor
      * @param array $param Consists of database variables, including url,
-     *                        username, password, database name for connection.
+     *                         username, password, database name for
+     *                         connection.
      */
     public function __construct($param) {
         // Setup default database variables
@@ -116,7 +117,7 @@ class MongoClass {
      * A helper function to check user email for registration
      * @param  string  $email User email address.
      * @return boolean        Returns true if the email address is not
-     *                                occupied, otherwise returns false.
+     *                            occupied, otherwise returns false.
      */
     private function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
@@ -131,8 +132,8 @@ class MongoClass {
     /**
      * Handles user registration
      * @param  array $registration User information for registration.
-     * @return string              Returns new user id if registration is
-     *                                     successful, otherwise returns false.
+     * @return string/boolean      Returns new user id if registration is
+     *                                 successful, otherwise returns false.
      */
     public function userRegistration($registration) {
         // Check input registration array
@@ -197,8 +198,8 @@ class MongoClass {
     /**
      * Handles user login authentication
      * @param  array $information User information for login.
-     * @return string             Returns user id if authentication is
-     *                                    successful, otherwise returns false.
+     * @return string/boolean     Returns user id if authentication is
+     *                                successful, otherwise returns false.
      */
     public function userLoginAuth($information) {
         // Check input information array
@@ -245,40 +246,78 @@ class MongoClass {
         return FALSE;
     }
 
-    // Handles collection of reward points
+
+    /**
+     * Handles collection of reward points
+     * @param  array $collection User information for collecting reward points.
+     * @return number/boolean    Returns personal available points for buyer if
+     *                               collection is successful, otherwise
+     *                               returns false.
+     */
     public function userAddPoints($collection) {
+        // Check input collection array
         if (is_array($collection) && count($collection) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
                 'numPoints', 'timetamp');
 
+            // Check input collection array keys
             if (count(array_intersect_key(array_flip($required),
                 $collection)) === count($required)) {
 
-                // Insert new 'Record' document
-                $this->recordCollection->insert($collection);
+                // Insert a new 'Record' document
+                try {
+                    $result = $this->recordCollection->insert($collection,
+                            array("w" => 1));
+                }
+                catch (MongoCursorException $e) {
+                    if (DEBUG) {
+                        echo "<div>>>operation error: $e</div>";
+                    }
+                }
 
-                echo "<div>>user added points successfully</div>";
-
-                // Update buyer and seller points
-                $availablePoints = handleUserPoints($collection);
-
-                echo "<div>>>availablePoints: $availablePoints </div>";
-                // TBD return availablePoints
-                return TRUE;
+                // Check operation result
+                if (is_null($result['err'])) {
+                    if (DEBUG) {
+                        echo "<div>>>added a new collection record</div>";
+                    }
+                    // Update buyer and seller points
+                    return handleUserPoints($collection);
+                }
+                else {
+                    if (DEBUG) {
+                        echo "<div>>>failed to add a new collection record".
+                             "</div>";
+                        echo "<div>>>error message: ".$result['err']."</div>";
+                    }
+                }
             }
-            echo "<div>>user added points unsuccessfully</div>";
+            if (DEBUG) {
+                echo "<div>>unsuccessfully to add a new collection record".
+                     "</div>";
+            }
         }
-        echo "<div>>bad request for adding user points</div>";
+        else {
+            if (DEBUG) {
+                echo "<div>>bad request for adding a new collection record".
+                     "</div>";
+            }
+        }
         return FALSE;
     }
 
-    // A helper function to validate request of points redemption
-    private function validateRedeemRequest($request) {
-        $buyerCurrentPoints = getUserAvailablePoints(
-            $request['buyerid']);
-        $sellerCurrentPoints = getUserAvailablePoints(
-            $request['sellerid']);
 
+    /**
+     * A helper function to validate request of points redemption
+     * @param  array $request User information for redeeming reward points.
+     * @return boolean        Returns true if the request is valid, otherwise
+     *                            returns false.
+     */
+    private function validateRedeemRequest($request) {
+        // Fetch user points
+        $buyerCurrentPoints = getUserAvailablePoints($request['buyerid']);
+        $sellerCurrentPoints = getUserAvailablePoints($request['sellerid']);
+
+        // Validate the request points in redemption
         if ($buyerCurrentPoints  > int($request['numPoints']) &&
             $sellerCurrentPoints > int($request['numPoints'])) {
             return TRUE;
@@ -288,7 +327,14 @@ class MongoClass {
         }
     }
 
-    // Handle redemption of reward points
+
+    /**
+     * Handle redemption of reward points
+     * @param  array $redemption User information for redeeming reward points.
+     * @return number/boolean    Returns personal published points for seller
+     *                               if redemption is successful, otherwise
+     *                               returns false.
+     */
     public function userRedeemPoints($redemption) {
         if (is_array($redemption) && count($redemption) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
@@ -317,68 +363,169 @@ class MongoClass {
         return FALSE;
     }
 
-    // A helper function to handle growth and decline of user points
+
+    /**
+     * A helper function to handle growth and decline of user reward points
+     * @param  array $param User inforamtion for reward points collection and
+     *                          redemption
+     * @return number       Returns total available points for buyer in points
+     *                          collection or total published points for seller
+     *                          in points redemption if operating
+     *                          successfully, otherwire returns 0
+     */
     private function handleUserPoints($param) {
         if ($param['action'] === 'add') { // Collection
-            // Update points
-            $buyerAvailablePoints = increasePoints(
-                $param['buyerid'], $param['numPoints']);
-            $sellerPublishedPoints = increasePoints(
-                $param['sellerid'], $param['numPoints']);
+            // Update points: increasing
+            $buyerAvailablePoints = increasePoints($param['buyerid'],
+                $param['numPoints']);
+            $sellerPublishedPoints = increasePoints($param['sellerid'],
+                $param['numPoints']);
 
-            return $buyerAvailablePoints; // return results to buyer
+            if (DEBUG) {
+                echo "<div>>>update user points successfully</div>";
+            }
+            return $buyerAvailablePoints; // return points to buyer
         }
         elseif ($param['action'] === 'redeem') { // Redemption
-            // Update points
-            $buyerAvailablePoints = decreasePoints(
-                $param['buyerid'], $param['numPoints']);
-            $sellerPublishedPoints = decreasePoints(
-                $param['sellerid'], $param['numPoints']);
+            // Update points: decreasing
+            $buyerAvailablePoints = decreasePoints($param['buyerid'],
+                $param['numPoints']);
+            $sellerPublishedPoints = decreasePoints($param['sellerid'],
+                $param['numPoints']);
 
-            return $sellerPublishedPoints; // return results to seller
+            if (DEBUG) {
+                echo "<div>>>update user points successfully</div>";
+            }
+            return $sellerPublishedPoints; // return points to seller
         }
         else {
             // TBD: Error handler
+            if (DEBUG) {
+                echo "<div>>>unsupported action occurs</div>";
+            }
+            return 0;
         }
     }
 
     // A helper function to fetch user current points
+    /**
+     * A helper function to fetch user current points
+     * @param  string $id_string User id string
+     * @return number            Returns available or published points to user
+     *                               if operating successfully, otherwise
+     *                               returns 0
+     */
     private function getUserAvailablePoints($id_string) {
         $mongo_id = new MongoID($id_string);
-        $cursor = $this->userCollection->findOne(
-            array('_id' => $mongo_id ));
 
-        if (!is_null($cursor)) {
-            return int($cursor['points']);
+        // Get user current points
+        try {
+            $result = $this->userCollection->findOne(
+                array('_id' => $mongo_id ));
+        }
+        catch (MongoConnectionException $e) {
+            if (DEBUG) {
+                echo "<div>>>operation error: $e</div>";
+            }
         }
 
-        return 0;
+        // Check operation result
+        if (!is_null($result)) {
+            if (DEBUG) {
+                echo "<div>>>fetch user current points successfully</div>";
+            }
+            return int($result['points']);
+        }
+        else {
+            if (DEBUG) {
+                echo "<div>>>failed to fetch user current points</div>";
+            }
+            return 0;
+        }
     }
 
-    // A helper function to increase user points
+
+    /**
+     * A helper function to increase user points
+     * @param  string $id_string User id string
+     * @param  number $points    User points
+     * @return number            Returns new available or published points to
+     *                               user
+     */
     private function increasePoints($id_string, $points) {
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = getUserAvailablePoints($id_string);
-        $newAvailablePoints = int($currentPoints) + int($points);
+        $newAvailablePoints = int($userCurrentPoints) + int($points);
 
-        $this->userCollection->update(
-            array('_id' => $mongo_id ),
-            array('$set'=> array('points' => $newAvailablePoints))
-            );
-        return int($newAvailablePoints);
+        // Update user points
+        try {
+            $result = $this->userCollection->update(
+                array('_id' => $mongo_id ),
+                array('$set'=> array('points' => $newAvailablePoints),
+                array("w" => 1))
+                );
+        }
+        catch (MongoCursorException $e) {
+            if (DEBUG) {
+                echo "<div>>>operation error: $e</div>";
+            }
+        }
+
+        // Check operation result
+        if (is_null($result['err'])) {
+            if (DEBUG) {
+                echo "<div>>>Update user points [Increasing]</div>";
+            }
+            return int($newAvailablePoints);
+        }
+        else {
+            if (DEBUG) {
+                echo "<div>>>failed to update user points [Increasing]</div>";
+                echo "<div>>>error message: ".$result['err']."</div>";
+            }
+        }
     }
 
-    // A helper function to decrease user points
+
+    /**
+     * A helper function to decrease user points
+     * @param  string $id_string User id string
+     * @param  number $points    User points
+     * @return number            Returns new available or published points to
+     *                               user
+     */
     private function decreasePoints($id_string, $points) {
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = getUserAvailablePoints($id_string);
-        $newAvailablePoints = int($currentPoints) - int($points);
+        $newAvailablePoints = int($userCurrentPoints) - int($points);
 
-        $this->userCollection->update(
-            array('_id' => $mongo_id ),
-            array('$set'=> array('points' => $newAvailablePoints))
-            );
-        return int($newAvailablePoints);
+        // Update user points
+        try {
+            $result = $this->userCollection->update(
+                array('_id' => $mongo_id ),
+                array('$set'=> array('points' => $newAvailablePoints),
+                array("w" => 1))
+                );
+        }
+        catch (MongoCursorException $e) {
+            if (DEBUG) {
+                echo "<div>>>operation error: $e</div>";
+            }
+        }
+
+        // Check operation result
+        if (is_null($result['err'])) {
+            if (DEBUG) {
+                echo "<div>>>Update user points [Increasing]</div>";
+            }
+            return int($newAvailablePoints);
+        }
+        else {
+            if (DEBUG) {
+                echo "<div>>>failed to update user points [Increasing]</div>";
+                echo "<div>>>error message: ".$result['err']."</div>";
+            }
+        }
     }
 }
 
@@ -391,7 +538,6 @@ $newBuyer = array(
     'type' => 'buyer',
     'publickey' => 'keytesting4444key'
     );
-//*/
 $newSeller = array(
     'email' => 'seller4@example.com',
     'password' => 'testing4444',
@@ -402,6 +548,21 @@ $loginUser = array(
     'email' => 'buyer4@example.com',
     'password' => 'testing4444',
     'type' => 'buyer'
+    );
+//*/
+$userCollectPointsData = array(
+    'buyerid'   => '54bba48e7b3fe953008b4567',
+    'sellerid'  => '54bbbaffc1293252008b4567',
+    'action'    => 'add',
+    'numPoints' => '20',
+    'timetamp'  => '1421668108'
+    );
+$userRedeemPointsData = array(
+    'buyerid'   => '54bba48e7b3fe953008b4567',
+    'sellerid'  => '54bbbaffc1293252008b4567',
+    'action'    => 'redeem',
+    'numPoints' => '20',
+    'timetamp'  => '1421668108'
     );
 
 /* Testing database connection
@@ -423,23 +584,33 @@ else
 //*/
 
 /* Test user login authentication
-//*/
-echo "<div>[Step 04] user login authentication</div>";
+///
+echo "<div>[Step 04] user authentication</div>";
 $uid = $db->userLoginAuth($loginUser);
 if ($uid)
-    echo "<div>>>new user id is: ".$uid."</div>";
+    echo "<div>>>user id is: ".$uid."</div>";
 else
     echo "<div>>>unsuccessful user authentication</div>";
 //*/
 
 /* Test collection of reward points
-///
-TBD
+*///
+echo "<div>[Step 05] user collects reward points</div>";
+$points = $db->userAddPoints($userCollectPointsData);
+if ($points)
+    echo "<div>>>buyer available points: ".$points."</div>";
+else
+    echo "<div>>>failed to collect reward points</div>";
 //*/
 
 /* Test redemption of reward points
 ///
-TBD
+echo "<div>[Step 05] user redeems reward points</div>";
+$points = $db->userRedeemPoints($userRedeemPointsData);
+if ($points)
+    echo "<div>>>seller published points: ".$points."</div>";
+else
+    echo "<div>>>failed to redeem reward points</div>";
 //*/
 
 echo "<div>[Final Step] close database connection</div>";
