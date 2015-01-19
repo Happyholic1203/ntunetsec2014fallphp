@@ -258,7 +258,7 @@ class MongoClass {
         // Check input collection array
         if (is_array($collection) && count($collection) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
-                'numPoints', 'timetamp');
+                'numPoints', 'timestamp');
 
             // Check input collection array keys
             if (count(array_intersect_key(array_flip($required),
@@ -281,6 +281,7 @@ class MongoClass {
                         echo "<div>>>added a new collection record</div>";
                     }
                     // Update buyer and seller points
+                    print_r($collection);
                     return handleUserPoints($collection);
                 }
                 else {
@@ -338,7 +339,7 @@ class MongoClass {
     public function userRedeemPoints($redemption) {
         if (is_array($redemption) && count($redemption) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
-                'numPoints', 'timetamp');
+                'numPoints', 'timestamp');
 
             if (count(array_intersect_key(array_flip($required),
                 $redemption)) === count($required)) {
@@ -374,6 +375,7 @@ class MongoClass {
      *                          successfully, otherwire returns 0
      */
     private function handleUserPoints($param) {
+        print_r($param);
         if ($param['action'] === 'add') { // Collection
             echo "<div>>>>>>>test1</div>";
             // Update points: increasing
@@ -558,14 +560,14 @@ $userCollectPointsData = array(
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'add',
     'numPoints' => '20',
-    'timetamp'  => '1421668108'
+    'timestamp'  => '1421668108'
     );
 $userRedeemPointsData = array(
     'buyerid'   => '54bba48e7b3fe953008b4567',
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'redeem',
     'numPoints' => '20',
-    'timetamp'  => '1421668108'
+    'timestamp'  => '1421668108'
     );
 
 /* Testing database connection
