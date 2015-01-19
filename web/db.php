@@ -400,7 +400,7 @@ $newSeller = array(
     'publickey' => 'keytesting4444key'
     );
 $loginUser = array(
-    'email' => 'buyer4@example.com',
+    'email' => 'buyer1@example.com',
     'password' => 'testing4444',
     'type' => 'buyer'
     );
