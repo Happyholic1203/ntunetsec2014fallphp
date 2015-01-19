@@ -320,8 +320,8 @@ class MongoClass {
             $request['sellerid']);
 
         // Validate the request points in red
-        if ($buyerCurrentPoints  > int($request['numPoints']) &&
-            $sellerCurrentPoints > int($request['numPoints'])) {
+        if ($buyerCurrentPoints  > intval($request['numPoints']) &&
+            $sellerCurrentPoints > intval($request['numPoints'])) {
             return TRUE;
         }
         else {
@@ -440,7 +440,9 @@ class MongoClass {
             if (DEBUG) {
                 echo "<div>>>fetch user current points successfully</div>";
             }
-            return int($result['points']);
+            echo "<div>>>>>>>points: ".$result['points']."</div>";
+            echo "<div>>>>>>>int points: ".intval($result['points'])."</div>";
+            return intval($result['points']);
         }
         else {
             if (DEBUG) {
@@ -462,7 +464,7 @@ class MongoClass {
         echo "<div>>>>>>>increasePoints</div>";
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
-        $newAvailablePoints = int($userCurrentPoints) + int($points);
+        $newAvailablePoints = intval($userCurrentPoints) + intval($points);
 
         // Update user points
         try {
@@ -483,7 +485,7 @@ class MongoClass {
             if (DEBUG) {
                 echo "<div>>>Update user points [Increasing]</div>";
             }
-            return int($newAvailablePoints);
+            return intval($newAvailablePoints);
         }
         else {
             if (DEBUG) {
@@ -505,7 +507,7 @@ class MongoClass {
         echo "<div>>>>>>>decreasePoints</div>";
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
-        $newAvailablePoints = int($userCurrentPoints) - int($points);
+        $newAvailablePoints = intval($userCurrentPoints) - intval($points);
 
         // Update user points
         try {
@@ -526,7 +528,7 @@ class MongoClass {
             if (DEBUG) {
                 echo "<div>>>Update user points [Increasing]</div>";
             }
-            return int($newAvailablePoints);
+            return intval($newAvailablePoints);
         }
         else {
             if (DEBUG) {
