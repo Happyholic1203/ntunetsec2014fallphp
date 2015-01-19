@@ -6,6 +6,7 @@
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
+define("DEBUG", TRUE);
 
 /**
  * A class for handling interaction with MongoDB
@@ -23,8 +24,8 @@ class MongoClass {
 
     /**
      * Class constructor
-     * @param Array $param Consists of database variables, including url,
-     * user, password, database name for connection
+     * @param array $param Consists of database variables, including url,
+     *                     username, password, database name for connection.
      */
     public function __construct($param) {
         // Setup default database variables
@@ -32,7 +33,10 @@ class MongoClass {
         $this->self['dbUser'] = getenv('MongoUser');
         $this->self['dbPass'] = getenv('MongoPass');
         $this->self['dbName'] = getenv('MongoDB');
-        echo "<div>>>new database object initlization is done</div>";
+
+        if (DEBUG) {
+            echo "<div>>>new database object initlization is done</div>";
+        }
 
         // Setup user-defined variables
         if (is_array($param)) {
@@ -47,14 +51,18 @@ class MongoClass {
 
             if (isset($param['database']))
                 $this->self['dbName'] = $param['database'];
-            echo "<div>>>update database object with user-defined info.</div>";
+
+            if (DEBUG) {
+                echo "<div>>>update database object with user-defined info.".
+                     "</div>";
+            }
         }
     }
 
 
     /**
      * Initializes database connection
-     * @return NULL
+     * @return NULL No return value.
      */
     public function init() {
         // Connect to mongodb
@@ -66,66 +74,109 @@ class MongoClass {
 
         // Choose predefined database and collections
         if ($this->connection) {
-            echo "<div>>>connect to database successfully</div>";
+            if (DEBUG) {
+                echo "<div>>>connect to database successfully</div>";
+            }
             $this->database = $this->connection
                 ->selectDB(MONGODB_DATABASE);
             $this->userCollection = $this->database
                 ->selectCollection(MONGODB_USER_COLLECTION);
             $this->recordCollection = $this->database
                 ->selectCollection(MONGODB_RECORD_COLLECTION);
-            echo "<div>>>choosing database and collections is done</div>";
+            if (DEBUG) {
+                echo "<div>>>choosing database and collections is done</div>";
+            }
         }
-        else
-            echo "<div>>>failed to connect database</div>";
+        else {
+            if (DEBUG) {
+                echo "<div>>>failed to connect database</div>";
+            }
+        }
     }
 
 
     /**
      * Terminates database connection
-     * @return [type] [description]
+     * @return NULL No return value.
      */
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
-            $closed = $this->$connection->close(TRUE);
-            echo $closed ?
-            "<div>>close database connection successfully</div>" :
-            "<div>>failed to close database connection</div>";
+            $closed = $this->$connection->close(TRUE); //TBD: potential error
+            if (DEBUG) {
+                echo $closed ?
+                "<div>>>close database connection successfully</div>" :
+                "<div>>>failed to close database connection</div>";
+            }
         }
     }
 
-    // A helper function to check user email for registration
+
+    /**
+     * A helper function to check user email for registration
+     * @param  string  $email User email address.
+     * @return boolean        Returns true if the email address is not
+     *                        occupied, otherwise returns false.
+     */
     private function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
 
-        if (!is_null($cursor))
-            return TRUE;
-        else
-            return FALSE;
+        if (!is_null($cursor)) return TRUE;
+
+        return FALSE;
     }
 
-    // Handles user registration
+
+    /**
+     * Handles user registration
+     * @param  array $registration User information for registration.
+     * @return string              New user id.
+     */
     public function userRegistration($registration) {
+        // Check input registration array
         if (is_array($registration) && count($registration) === 4) {
             $required = array('email', 'password', 'type', 'publickey');
 
+            // Check input registration array keys
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
 
+                // Check user email address
                 if (!isUserEmailOccupied($registration['email'])) {
-                    // Insert new 'User' document
-                    $this->userCollection->insert($registration);
+                    if (DEBUG) {
+                        echo "<div>>>new user email address is verified".
+                             "</div>";
+                    }
+                    // Add basic user points
+                    $registration['points'] = '0';
+                    // Insert a new 'User' document
+                    $result = $this->userCollection->insert($registration,
+                        array("w" => '1'));
 
-                    echo "<div>>added a new user acoount</div>";
-                    echo "<div>>>_id: ".$registration['_id']."</div>";
-                    // TBD return _id
-                    return TRUE;
+                    if (is_null($result['err'])) {
+                        if (DEBUG) {
+                            echo "<div>>>added a new user acoount</div>";
+                        }
+                        return $registration['_id'];
+                    }
+                    else {
+                        if (DEBUG) {
+                            echo "<div>>>operation error: ".$result['err'].
+                                 "</div>";
+                        }
+                    }
                 }
             }
-            echo "<div>>added a new user acoount unsuccessfully</div>";
+            if (DEBUG) {
+                echo "<div>>>unsuccessful to register a new user</div>";
+            }
         }
-        echo "<div>>bad request for user registration</div>";
+        else {
+            if (DEBUG) {
+                echo "<div>>>bad request for user registration</div>";
+            }
+        }
         return FALSE;
     }
 
@@ -309,20 +360,23 @@ $newSeller = array(
     'publickey' => 'keytesting1111key'
     );
 
-//
+/* Test database connection
+*///
 echo "<div>[Step 01] generate a new db object</div>";
 $db = new MongoClass();
 echo "<div>[Step 02] connect to database</div>";
 $db->init();
+//*/
 
 /* Test user registration
-echo "<div>check user email for registration</div>";
-if(!$db->isUserEmailOccupied($newUser['email'])) {
-    $db->userRegistration($newUser);
-}
+*///
+echo "<div>[Step 03] user registration</div>";
+$uid = $db->userRegistration($newBuyer);
+if ($uid)
+    echo "<div>>>new user id is: ".$uid."</div>";
 else
-    echo "<div>user account exists.</div>";
-*/
+    echo "<div>>>mail address existed or bad request</div>";
+//*/
 
 /* Test user login authentication
 echo "<div>check user login authentication</div>";
@@ -333,7 +387,7 @@ else
     echo "<div>user authenticated unsuccessfully</div>";
 */
 
-echo "<div>[Final  ] close database connection</div>";
+echo "<div>[Final&nbsp;&nbsp;] close database connection</div>";
 $db->close();
 
 ?>
