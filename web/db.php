@@ -606,7 +606,7 @@ $userRedeemPointsData = array(
     'buyerid'   => '54bba48e7b3fe953008b4567',
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'redeem',
-    'numPoints' => '10',
+    'numPoints' => '70',
     'timestamp' => '1421668108'
     );
 
