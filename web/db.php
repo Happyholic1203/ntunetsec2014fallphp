@@ -7,7 +7,7 @@ define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
 define("DEBUG", FALSE);
-define("TESTING", TRUE);
+define("TESTING", FALSE);
 
 /**
  * A class for handling interaction with MongoDB
@@ -617,8 +617,8 @@ if (TESTING) { // MongoClass Testing Procedure
         );
     *///
 
-    /* Testing database connection
-    *///
+    /* Testing opening database connection
+    ///
     echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
     $db = new MongoClass();
     echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
@@ -665,7 +665,10 @@ if (TESTING) { // MongoClass Testing Procedure
         echo "<div>>>failed to redeem reward points</div>";
     //*/
 
+    /* Testing terminating database connection
+    ///
     echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
     $db->close();
+    //*/
 }
 ?>
