@@ -281,8 +281,7 @@ class MongoClass {
                         echo "<div>>>added a new collection record</div>";
                     }
                     // Update buyer and seller points
-                    print_r($collection);
-                    return handleUserPoints($collection);
+                    return $this->handleUserPoints($collection);
                 }
                 else {
                     if (DEBUG) {
@@ -315,8 +314,10 @@ class MongoClass {
      */
     private function validateRedeemRequest($request) {
         // Fetch user points
-        $buyerCurrentPoints = getUserAvailablePoints($request['buyerid']);
-        $sellerCurrentPoints = getUserAvailablePoints($request['sellerid']);
+        $buyerCurrentPoints = $this->getUserAvailablePoints(
+            $request['buyerid']);
+        $sellerCurrentPoints = $this->getUserAvailablePoints(
+            $request['sellerid']);
 
         // Validate the request points in red
         if ($buyerCurrentPoints  > int($request['numPoints']) &&
@@ -351,7 +352,7 @@ class MongoClass {
                     echo "<div>>user redeemed points successfully</div>";
 
                     // Update buyer and seller points
-                    $availablePoints = handleUserPoints($redemption);
+                    $availablePoints = $this->handleUserPoints($redemption);
 
                     echo "<div>>>availablePoints: $availablePoints </div>";
                     // TBD return availablePoints
@@ -375,13 +376,12 @@ class MongoClass {
      *                          successfully, otherwire returns 0
      */
     private function handleUserPoints($param) {
-        print_r($param);
         if ($param['action'] === 'add') { // Collection
-            echo "<div>>>>>>>test1</div>";
+
             // Update points: increasing
-            $buyerAvailablePoints = increasePoints($param['buyerid'],
+            $buyerAvailablePoints = $this->increasePoints($param['buyerid'],
                 $param['numPoints']);
-            $sellerPublishedPoints = increasePoints($param['sellerid'],
+            $sellerPublishedPoints = $this->increasePoints($param['sellerid'],
                 $param['numPoints']);
 
             if (DEBUG) {
@@ -390,11 +390,11 @@ class MongoClass {
             return $buyerAvailablePoints; // return points to buyer
         }
         elseif ($param['action'] === 'redeem') { // Redemption
-            echo "<div>>>>>>>test2</div>";
+
             // Update points: decreasing
-            $buyerAvailablePoints = decreasePoints($param['buyerid'],
+            $buyerAvailablePoints = $this->decreasePoints($param['buyerid'],
                 $param['numPoints']);
-            $sellerPublishedPoints = decreasePoints($param['sellerid'],
+            $sellerPublishedPoints = $this->decreasePoints($param['sellerid'],
                 $param['numPoints']);
 
             if (DEBUG) {
@@ -403,7 +403,6 @@ class MongoClass {
             return $sellerPublishedPoints; // return points to seller
         }
         else {
-            echo "<div>>>>>>>test3</div>";
             // TBD: Error handler
             if (DEBUG) {
                 echo "<div>>>unsupported action occurs</div>";
@@ -459,7 +458,7 @@ class MongoClass {
      */
     private function increasePoints($id_string, $points) {
         $mongo_id = new MongoID($id_string);
-        $userCurrentPoints = getUserAvailablePoints($id_string);
+        $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = int($userCurrentPoints) + int($points);
 
         // Update user points
@@ -501,7 +500,7 @@ class MongoClass {
      */
     private function decreasePoints($id_string, $points) {
         $mongo_id = new MongoID($id_string);
-        $userCurrentPoints = getUserAvailablePoints($id_string);
+        $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = int($userCurrentPoints) - int($points);
 
         // Update user points
