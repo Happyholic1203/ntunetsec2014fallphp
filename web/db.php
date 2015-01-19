@@ -229,13 +229,12 @@ class MongoClass {
                 }
                 else {
                     if (DEBUG) {
-                        echo "<div>>>invalid request for user authentication".
-                             "</div>";
+                        echo "<div>>>user authentication failed</div>";
                     }
                 }
             }
             if (DEBUG) {
-                echo "<div>>>unsuccessful user authentication</div>";
+                echo "<div>>>invalid request for user authentication</div>";
             }
         }
         else {
