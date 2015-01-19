@@ -6,8 +6,8 @@
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
-define("DEBUG", TRUE);
-define("TESTING", TRUE);
+define("DEBUG", FALSE);
+define("TESTING", FALSE);
 
 /**
  * A class for handling interaction with MongoDB
@@ -653,12 +653,12 @@ if (TESTING) { // MongoClass Testing Procedure
         'numPoints' => '70',
         'timestamp' => '1421668108'
         );
-    *///
-    $uid = '54bba48e7b3fe953008b4567';
     ///
+    $uid = '54bba48e7b3fe953008b4567';
+    //*/
 
     /* Test opening database connection
-    *///
+    ///
     echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
     $db = new MongoClass();
     echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
@@ -706,7 +706,7 @@ if (TESTING) { // MongoClass Testing Procedure
     //*/
 
     /* Test fetching user publickey
-    *///
+    ///
     echo "<div>&nbsp;</div><div>[Step 07] user publickey</div>";
     $publickey = $db->getUserPublickey($uid);
     if (!is_null($publickey))
@@ -716,7 +716,7 @@ if (TESTING) { // MongoClass Testing Procedure
     //*/
 
     /* Testing terminating database connection
-    *///
+    ///
     echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
     $db->close();
     //*/
