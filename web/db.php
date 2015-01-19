@@ -6,7 +6,7 @@
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
-define("DEBUG", TRUE);
+define("DEBUG", FALSE);
 define("TESTING", TRUE);
 
 /**
