@@ -312,7 +312,7 @@ class MongoClass {
      * @return boolean        Returns true if the request is valid, otherwise
      *                            returns false.
      */
-    private function validateRedeemRequest($request) {
+    private function validateRedemptionRequest($request) {
         // Fetch user points
         $buyerCurrentPoints = $this->getUserAvailablePoints(
             $request['buyerid']);
@@ -322,9 +322,15 @@ class MongoClass {
         // Validate the request points in red
         if ($buyerCurrentPoints  > intval($request['numPoints']) &&
             $sellerCurrentPoints > intval($request['numPoints'])) {
+            if (DEBUG) {
+                echo "<div>>>>>Redemption request is valid</div>";
+            }
             return TRUE;
         }
         else {
+            if (DEBUG) {
+                echo "<div>>>>>Redemption request is invalid</div>";
+            }
             return FALSE;
         }
     }
@@ -342,14 +348,14 @@ class MongoClass {
         if (is_array($redemption) && count($redemption) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
                 'numPoints', 'timestamp');
-            echo "<div>>>>>>>test1</div>";
+
             // Check input redemption array keys
             if (count(array_intersect_key(array_flip($required),
                 $redemption)) === count($required)) {
-                echo "<div>>>>>>>test2</div>";
+
                 // Validate the redemption request
-                if (validateRedeemRequest($redemption)) {
-                    echo "<div>>>>>>>test4</div>";
+                if ($this->validateRedemptionRequest($redemption)) {
+
                     // Insert a new 'Record' document
                     try {
                         $result = $this->recordCollection->insert($redemption,
@@ -360,7 +366,7 @@ class MongoClass {
                             echo "<div>>>operation error: $e</div>";
                         }
                     }
-                    echo "<div>>>>>>>test5</div>";
+
                     // Check operation result
                     if (is_null($result['err'])) {
                         if (DEBUG) {
@@ -380,13 +386,13 @@ class MongoClass {
                 }
             }
             if (DEBUG) {
-                echo "<div>>unsuccessfully to add a new redemption record".
+                echo "<div>>>unsuccessfully to add a new redemption record".
                      "</div>";
             }
         }
         else {
             if (DEBUG) {
-                echo "<div>>bad request for adding a new redemption record".
+                echo "<div>>>bad request for adding a new redemption record".
                      "</div>";
             }
         }
