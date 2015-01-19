@@ -566,14 +566,14 @@ $userCollectPointsData = array(
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'add',
     'numPoints' => '20',
-    'timestamp'  => '1421668108'
+    'timestamp' => '1421668108'
     );
 $userRedeemPointsData = array(
     'buyerid'   => '54bba48e7b3fe953008b4567',
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'redeem',
     'numPoints' => '10',
-    'timestamp'  => '1421668108'
+    'timestamp' => '1421668108'
     );
 
 /* Testing database connection
@@ -605,7 +605,7 @@ else
 //*/
 
 /* Test collection of reward points
-*///
+///
 echo "<div>&nbsp;</div><div>[Step 05] user collects reward points</div>";
 $points = $db->userAddPoints($userCollectPointsData);
 if ($points)
@@ -615,7 +615,7 @@ else
 //*/
 
 /* Test redemption of reward points
-///
+*///
 echo "<div>&nbsp;</div><div>[Step 06] user redeems reward points</div>";
 $points = $db->userRedeemPoints($userRedeemPointsData);
 if ($points)
