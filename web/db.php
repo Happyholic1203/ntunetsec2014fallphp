@@ -141,14 +141,14 @@ $db = new MongoClass();
 echo "<div>connect to db</div>";
 $db->init();
 
-/* Test user registration */
+/* Test user registration
 echo "<div>check user email for registration</div>";
 if(!$db->isUserEmailOccupied($newUser['email'])) {
     $db->userRegistration($newUser);
 }
 else
     echo "<div>user account exists.</div>";
-
+*/
 
 /* Test user login authentication
 echo "<div>check user login authentication</div>";
