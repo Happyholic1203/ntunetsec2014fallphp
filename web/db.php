@@ -320,8 +320,8 @@ class MongoClass {
             $request['sellerid']);
 
         // Validate the request points in red
-        if ($buyerCurrentPoints  > intval($request['numPoints']) &&
-            $sellerCurrentPoints > intval($request['numPoints'])) {
+        if ($buyerCurrentPoints  >= intval($request['numPoints']) &&
+            $sellerCurrentPoints >= intval($request['numPoints'])) {
             if (DEBUG) {
                 echo "<div>>>>>Redemption request is valid</div>";
             }
@@ -574,91 +574,93 @@ class MongoClass {
     }
 }
 
-// MongoClass Testing Procedure
-/* Testing user data
-///
-$newBuyer = array(
-    'email' => 'buyer4@example.com',
-    'password' => 'testing4444',
-    'type' => 'buyer',
-    'publickey' => 'keytesting4444key'
-    );
-$newSeller = array(
-    'email' => 'seller4@example.com',
-    'password' => 'testing4444',
-    'type' => 'seller',
-    'publickey' => 'keytesting4444key'
-    );
-$loginUser = array(
-    'email' => 'buyer4@example.com',
-    'password' => 'testing4444',
-    'type' => 'buyer'
-    );
-//*/
-$userCollectPointsData = array(
-    'buyerid'   => '54bba48e7b3fe953008b4567',
-    'sellerid'  => '54bbbaffc1293252008b4567',
-    'action'    => 'add',
-    'numPoints' => '20',
-    'timestamp' => '1421668108'
-    );
-$userRedeemPointsData = array(
-    'buyerid'   => '54bba48e7b3fe953008b4567',
-    'sellerid'  => '54bbbaffc1293252008b4567',
-    'action'    => 'redeem',
-    'numPoints' => '70',
-    'timestamp' => '1421668108'
-    );
 
-/* Testing database connection
-*///
-echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
-$db = new MongoClass();
-echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
-$db->init();
-//*/
+if (DEBUG) { // MongoClass Testing Procedure
 
-/* Testing user registration
-///
-echo "<div>&nbsp;</div><div>[Step 03] user registration</div>";
-$uid = $db->userRegistration($newBuyer);
-if ($uid)
-    echo "<div>>>new user id is: ".$uid."</div>";
-else
-    echo "<div>>>mail address existed or bad request</div>";
-//*/
+    /* Testing user data
+    ///
+    $newBuyer = array(
+        'email' => 'buyer4@example.com',
+        'password' => 'testing4444',
+        'type' => 'buyer',
+        'publickey' => 'keytesting4444key'
+        );
+    $newSeller = array(
+        'email' => 'seller4@example.com',
+        'password' => 'testing4444',
+        'type' => 'seller',
+        'publickey' => 'keytesting4444key'
+        );
+    $loginUser = array(
+        'email' => 'buyer4@example.com',
+        'password' => 'testing4444',
+        'type' => 'buyer'
+        );
+    //*/
+    $userCollectPointsData = array(
+        'buyerid'   => '54bba48e7b3fe953008b4567',
+        'sellerid'  => '54bbbaffc1293252008b4567',
+        'action'    => 'add',
+        'numPoints' => '20',
+        'timestamp' => '1421668108'
+        );
+    $userRedeemPointsData = array(
+        'buyerid'   => '54bba48e7b3fe953008b4567',
+        'sellerid'  => '54bbbaffc1293252008b4567',
+        'action'    => 'redeem',
+        'numPoints' => '70',
+        'timestamp' => '1421668108'
+        );
 
-/* Test user login authentication
-///
-echo "<div>&nbsp;</div><div>[Step 04] user authentication</div>";
-$uid = $db->userLoginAuth($loginUser);
-if ($uid)
-    echo "<div>>>user id is: ".$uid."</div>";
-else
-    echo "<div>>>unsuccessful user authentication</div>";
-//*/
+    /* Testing database connection
+    *///
+    echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
+    $db = new MongoClass();
+    echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
+    $db->init();
+    //*/
 
-/* Test collection of reward points
-///
-echo "<div>&nbsp;</div><div>[Step 05] user collects reward points</div>";
-$points = $db->userAddPoints($userCollectPointsData);
-if ($points)
-    echo "<div>>>buyer available points: ".$points."</div>";
-else
-    echo "<div>>>failed to collect reward points</div>";
-//*/
+    /* Testing user registration
+    ///
+    echo "<div>&nbsp;</div><div>[Step 03] user registration</div>";
+    $uid = $db->userRegistration($newBuyer);
+    if ($uid)
+        echo "<div>>>new user id is: ".$uid."</div>";
+    else
+        echo "<div>>>mail address existed or bad request</div>";
+    //*/
 
-/* Test redemption of reward points
-*///
-echo "<div>&nbsp;</div><div>[Step 06] user redeems reward points</div>";
-$points = $db->userRedeemPoints($userRedeemPointsData);
-if ($points)
-    echo "<div>>>seller published points: ".$points."</div>";
-else
-    echo "<div>>>failed to redeem reward points</div>";
-//*/
+    /* Test user login authentication
+    ///
+    echo "<div>&nbsp;</div><div>[Step 04] user authentication</div>";
+    $uid = $db->userLoginAuth($loginUser);
+    if ($uid)
+        echo "<div>>>user id is: ".$uid."</div>";
+    else
+        echo "<div>>>unsuccessful user authentication</div>";
+    //*/
 
-echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
-$db->close();
+    /* Test collection of reward points
+    ///
+    echo "<div>&nbsp;</div><div>[Step 05] user collects reward points</div>";
+    $points = $db->userAddPoints($userCollectPointsData);
+    if ($points)
+        echo "<div>>>buyer available points: ".$points."</div>";
+    else
+        echo "<div>>>failed to collect reward points</div>";
+    //*/
 
+    /* Test redemption of reward points
+    *///
+    echo "<div>&nbsp;</div><div>[Step 06] user redeems reward points</div>";
+    $points = $db->userRedeemPoints($userRedeemPointsData);
+    if ($points)
+        echo "<div>>>seller published points: ".$points."</div>";
+    else
+        echo "<div>>>failed to redeem reward points</div>";
+    //*/
+
+    echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
+    $db->close();
+}
 ?>
