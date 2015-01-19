@@ -116,7 +116,7 @@ class MongoClass {
      * A helper function to check user email for registration
      * @param  string  $email User email address.
      * @return boolean        Returns true if the email address is not
-     *                        occupied, otherwise returns false.
+     *                                occupied, otherwise returns false.
      */
     private function isUserEmailOccupied($email) {
         $cursor = $this->userCollection->findOne(
@@ -131,7 +131,8 @@ class MongoClass {
     /**
      * Handles user registration
      * @param  array $registration User information for registration.
-     * @return string              New user id.
+     * @return string              Returns new user id if registration is
+     *                                     successful, otherwise returns false.
      */
     public function userRegistration($registration) {
         // Check input registration array
@@ -192,31 +193,56 @@ class MongoClass {
         return FALSE;
     }
 
-    // Handles user login authentication
+
+    /**
+     * Handles user login authentication
+     * @param  array $information User information for login.
+     * @return string             Returns user id if authentication is
+     *                                    successful, otherwise returns false.
+     */
     public function userLoginAuth($information) {
+        // Check input information array
         if (is_array($information) && count($information) === 3) {
             $required = array('email', 'password', 'type');
 
+            // Check input information array keys
             if (count(array_intersect_key(array_flip($required),
                 $information)) === count($required)) {
 
-                $cursor = $this->userCollection->findOne($information,
-                    array('_id'));
+                // Check whether user exists or not
+                try {
+                    $result = $this->userCollection->findOne($information,
+                        array('_id'));
+                }
+                catch (MongoConnectionException $e) {
+                    if (DEBUG) {
+                        echo "<div>>>operation error: $e</div>";
+                    }
+                }
 
-                if (is_null($cursor)) {
-                    echo "<div>>bad request for user login</div>";
-                    return FALSE;
+                // Check operation result
+                if (!is_null($result)) {
+                    if (DEBUG) {
+                        echo "<div>>>user passed authentication</div>";
+                    }
+                    return $result['_id'];
                 }
                 else {
-                    echo "<div>>user passed authentication</div>";
-                    echo "<div>>>_id: ".$cursor['_id']."</div>";
-                    // TBD return _id
-                    return TRUE;
+                    if (DEBUG) {
+                        echo "<div>>>invalid request for user authentication".
+                             "</div>";
+                    }
                 }
             }
-            echo "<div>>unsuccessful user authentication</div>";
+            if (DEBUG) {
+                echo "<div>>>unsuccessful user authentication</div>";
+            }
         }
-        echo "<div>bad request for user login</div>";
+        else {
+            if (DEBUG) {
+                echo "<div>>>bad request for user authentication</div>";
+            }
+        }
         return FALSE;
     }
 
@@ -373,6 +399,11 @@ $newSeller = array(
     'type' => 'seller',
     'publickey' => 'keytesting4444key'
     );
+$loginUser = array(
+    'email' => 'buyer4@example.com',
+    'password' => 'testing4444',
+    'type' => 'buyer'
+    );
 
 /* Testing database connection
 *///
@@ -394,12 +425,12 @@ else
 
 /* Test user login authentication
 *///
-echo "<div>check user login authentication</div>";
-if ($db->userLoginAuth($newUser)) {
-    echo "<div>user authenticated successfully</div>";
-}
+echo "<div>[Step 04] user login authentication</div>";
+$uid = $db->userLoginAuth($loginUser);
+if ($uid)
+    echo "<div>>>successful user authentication</div>";
 else
-    echo "<div>user authenticated unsuccessfully</div>";
+    echo "<div>>>unsuccessful user authentication</div>";
 //*/
 
 /* Test collection of reward points
