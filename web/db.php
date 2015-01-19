@@ -119,9 +119,10 @@ class MongoClass {
      *                        occupied, otherwise returns false.
      */
     private function isUserEmailOccupied($email) {
+        echo "<div>>>>>>test3</div>";
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
-
+        echo "<div>>>>>>test4</div>";
         if (!is_null($cursor)) return TRUE;
 
         return FALSE;
@@ -141,10 +142,10 @@ class MongoClass {
             // Check input registration array keys
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
-                echo "<div>>>>>>test2</div>";
+                echo "<div>>>>>>test2: ".$registration['email']."</div>";
                 // Check user email address
                 if (!isUserEmailOccupied($registration['email'])) {
-                    echo "<div>>>>>>test3</div>";
+                    echo "<div>>>>>>test5</div>";
                     if (DEBUG) {
                         echo "<div>>>new user email address is verified".
                              "</div>";
