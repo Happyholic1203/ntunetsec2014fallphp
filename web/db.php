@@ -144,7 +144,7 @@ class MongoClass {
                 $registration)) === count($required)) {
                 echo "<div>>>>>>test2: ".$registration['email']."</div>";
                 // Check user email address
-                if (!isUserEmailOccupied($registration['email'])) {
+                if (!$this->isUserEmailOccupied($registration['email'])) {
                     echo "<div>>>>>>test5</div>";
                     if (DEBUG) {
                         echo "<div>>>new user email address is verified".
