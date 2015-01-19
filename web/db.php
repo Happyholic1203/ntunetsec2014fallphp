@@ -386,7 +386,7 @@ class MongoClass {
                 $param['numPoints']);
 
             if (DEBUG) {
-                echo "<div>>>update user points successfully</div>";
+                echo "<div>>>>>update user points successfully</div>";
             }
             return $buyerAvailablePoints; // return points to buyer
         }
@@ -399,14 +399,14 @@ class MongoClass {
                 $param['numPoints']);
 
             if (DEBUG) {
-                echo "<div>>>update user points successfully</div>";
+                echo "<div>>>>>update user points successfully</div>";
             }
             return $sellerPublishedPoints; // return points to seller
         }
         else {
             // TBD: Error handler
             if (DEBUG) {
-                echo "<div>>>unsupported action occurs</div>";
+                echo "<div>>>>>unsupported action occurs</div>";
             }
             return 0;
         }
@@ -431,20 +431,20 @@ class MongoClass {
         }
         catch (MongoConnectionException $e) {
             if (DEBUG) {
-                echo "<div>>>operation error: $e</div>";
+                echo "<div>>>>>>>operation error: $e</div>";
             }
         }
 
         // Check operation result
         if (!is_null($result)) {
             if (DEBUG) {
-                echo "<div>>>fetch user current points successfully</div>";
+                echo "<div>>>>>>>fetch user current points successfully</div>";
             }
             return intval($result['points']);
         }
         else {
             if (DEBUG) {
-                echo "<div>>>failed to fetch user current points</div>";
+                echo "<div>>>>>>>failed to fetch user current points</div>";
             }
             return 0;
         }
@@ -474,21 +474,22 @@ class MongoClass {
         }
         catch (MongoCursorException $e) {
             if (DEBUG) {
-                echo "<div>>>operation error: $e</div>";
+                echo "<div>>>>>>>operation error: $e</div>";
             }
         }
 
         // Check operation result
         if (is_null($result['err'])) {
             if (DEBUG) {
-                echo "<div>>>Update user points [Increasing]</div>";
+                echo "<div>>>>>>>update user points [Increasing]</div>";
             }
             return intval($newAvailablePoints);
         }
         else {
             if (DEBUG) {
-                echo "<div>>>failed to update user points [Increasing]</div>";
-                echo "<div>>>error message: ".$result['err']."</div>";
+                echo "<div>>>>>>>failed to update user points [Increasing]".
+                     "</div>";
+                echo "<div>>>>>>>error message: ".$result['err']."</div>";
             }
         }
     }
@@ -517,21 +518,22 @@ class MongoClass {
         }
         catch (MongoCursorException $e) {
             if (DEBUG) {
-                echo "<div>>>operation error: $e</div>";
+                echo "<div>>>>>>>operation error: $e</div>";
             }
         }
 
         // Check operation result
         if (is_null($result['err'])) {
             if (DEBUG) {
-                echo "<div>>>Update user points [Increasing]</div>";
+                echo "<div>>>>>>>update user points [Decreasing]</div>";
             }
             return intval($newAvailablePoints);
         }
         else {
             if (DEBUG) {
-                echo "<div>>>failed to update user points [Increasing]</div>";
-                echo "<div>>>error message: ".$result['err']."</div>";
+                echo "<div>>>>>>>failed to update user points [Decreasing]".
+                     "</div>";
+                echo "<div>>>>>>>error message: ".$result['err']."</div>";
             }
         }
     }
