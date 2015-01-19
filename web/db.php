@@ -440,8 +440,6 @@ class MongoClass {
             if (DEBUG) {
                 echo "<div>>>fetch user current points successfully</div>";
             }
-            echo "<div>>>>>>>points: ".$result['points']."</div>";
-            echo "<div>>>>>>>int points: ".intval($result['points'])."</div>";
             return intval($result['points']);
         }
         else {
@@ -470,8 +468,8 @@ class MongoClass {
         try {
             $result = $this->userCollection->update(
                 array('_id' => $mongo_id ),
-                array('$set'=> array('points' => $newAvailablePoints),
-                array("w" => 1))
+                array('$set'=> array('points' => $newAvailablePoints)),
+                array("w" => 1)
                 );
         }
         catch (MongoCursorException $e) {
@@ -513,8 +511,8 @@ class MongoClass {
         try {
             $result = $this->userCollection->update(
                 array('_id' => $mongo_id ),
-                array('$set'=> array('points' => $newAvailablePoints),
-                array("w" => 1))
+                array('$set'=> array('points' => $newAvailablePoints)),
+                array("w" => 1)
                 );
         }
         catch (MongoCursorException $e) {
