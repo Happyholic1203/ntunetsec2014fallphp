@@ -342,14 +342,14 @@ class MongoClass {
         if (is_array($redemption) && count($redemption) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
                 'numPoints', 'timestamp');
-
+            echo "<div>>>>>>>test1</div>";
             // Check input redemption array keys
             if (count(array_intersect_key(array_flip($required),
                 $redemption)) === count($required)) {
-
+                echo "<div>>>>>>>test2</div>";
                 // Validate the redemption request
                 if (validateRedeemRequest($redemption)) {
-
+                    echo "<div>>>>>>>test4</div>";
                     // Insert a new 'Record' document
                     try {
                         $result = $this->recordCollection->insert($redemption,
@@ -360,7 +360,7 @@ class MongoClass {
                             echo "<div>>>operation error: $e</div>";
                         }
                     }
-
+                    echo "<div>>>>>>>test5</div>";
                     // Check operation result
                     if (is_null($result['err'])) {
                         if (DEBUG) {
