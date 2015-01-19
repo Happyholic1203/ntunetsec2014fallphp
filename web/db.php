@@ -338,30 +338,58 @@ class MongoClass {
      *                               returns false.
      */
     public function userRedeemPoints($redemption) {
+        // Check input redemption array
         if (is_array($redemption) && count($redemption) === 5) {
             $required = array('buyerid', 'sellerid', 'action',
                 'numPoints', 'timestamp');
 
+            // Check input redemption array keys
             if (count(array_intersect_key(array_flip($required),
                 $redemption)) === count($required)) {
 
+                // Validate the redemption request
                 if (validateRedeemRequest($redemption)) {
-                    // Insert new 'Record' document
-                    $this->recordCollection->insert($redemption);
 
-                    echo "<div>>user redeemed points successfully</div>";
+                    // Insert a new 'Record' document
+                    try {
+                        $result = $this->recordCollection->insert($redemption,
+                                array("w" => 1));
+                    }
+                    catch (MongoCursorException $e) {
+                        if (DEBUG) {
+                            echo "<div>>>operation error: $e</div>";
+                        }
+                    }
 
-                    // Update buyer and seller points
-                    $availablePoints = $this->handleUserPoints($redemption);
-
-                    echo "<div>>>availablePoints: $availablePoints </div>";
-                    // TBD return availablePoints
-                    return TRUE;
+                    // Check operation result
+                    if (is_null($result['err'])) {
+                        if (DEBUG) {
+                            echo "<div>>>added a new redemption record</div>";
+                        }
+                        // Update buyer and seller points
+                        return $this->handleUserPoints($redemption);
+                    }
+                    else {
+                        if (DEBUG) {
+                            echo "<div>>>failed to add a new redemption ".
+                                 "record</div>";
+                            echo "<div>>>error message: ".$result['err'].
+                                 "</div>";
+                        }
+                    }
                 }
             }
-            echo "<div>>user redeemed points unsuccessfully</div>";
+            if (DEBUG) {
+                echo "<div>>unsuccessfully to add a new redemption record".
+                     "</div>";
+            }
         }
-        echo "<div>>bad request for redeeming user points</div>";
+        else {
+            if (DEBUG) {
+                echo "<div>>bad request for adding a new redemption record".
+                     "</div>";
+            }
+        }
         return FALSE;
     }
 
