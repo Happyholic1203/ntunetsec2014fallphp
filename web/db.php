@@ -376,6 +376,7 @@ class MongoClass {
      *                          successfully, otherwire returns 0
      */
     private function handleUserPoints($param) {
+        echo "<div>>>>>>>handleUserPoints</div>";
         if ($param['action'] === 'add') { // Collection
 
             // Update points: increasing
@@ -420,6 +421,7 @@ class MongoClass {
      *                               returns 0
      */
     private function getUserAvailablePoints($id_string) {
+        echo "<div>>>>>>>getUserAvailablePoints</div>";
         $mongo_id = new MongoID($id_string);
 
         // Get user current points
@@ -457,10 +459,11 @@ class MongoClass {
      *                               user
      */
     private function increasePoints($id_string, $points) {
+        echo "<div>>>>>>>increasePoints</div>";
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = int($userCurrentPoints) + int($points);
-        echo "<div>userCurrentPoints: $userCurrentPoints</div>";
+
         // Update user points
         try {
             $result = $this->userCollection->update(
@@ -499,6 +502,7 @@ class MongoClass {
      *                               user
      */
     private function decreasePoints($id_string, $points) {
+        echo "<div>>>>>>>decreasePoints</div>";
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = int($userCurrentPoints) - int($points);
@@ -571,15 +575,15 @@ $userRedeemPointsData = array(
 
 /* Testing database connection
 *///
-echo "<div>[Step 01] generate a new db object</div>";
+echo "<div>&nbsp;</div><div>[Step 01] generate a new db object</div>";
 $db = new MongoClass();
-echo "<div>[Step 02] connect to database</div>";
+echo "<div>&nbsp;</div><div>[Step 02] connect to database</div>";
 $db->init();
 //*/
 
 /* Testing user registration
 ///
-echo "<div>[Step 03] user registration</div>";
+echo "<div>&nbsp;</div><div>[Step 03] user registration</div>";
 $uid = $db->userRegistration($newBuyer);
 if ($uid)
     echo "<div>>>new user id is: ".$uid."</div>";
@@ -589,7 +593,7 @@ else
 
 /* Test user login authentication
 ///
-echo "<div>[Step 04] user authentication</div>";
+echo "<div>&nbsp;</div><div>[Step 04] user authentication</div>";
 $uid = $db->userLoginAuth($loginUser);
 if ($uid)
     echo "<div>>>user id is: ".$uid."</div>";
@@ -599,7 +603,7 @@ else
 
 /* Test collection of reward points
 *///
-echo "<div>[Step 05] user collects reward points</div>";
+echo "<div>&nbsp;</div><div>[Step 05] user collects reward points</div>";
 $points = $db->userAddPoints($userCollectPointsData);
 if ($points)
     echo "<div>>>buyer available points: ".$points."</div>";
@@ -609,7 +613,7 @@ else
 
 /* Test redemption of reward points
 ///
-echo "<div>[Step 05] user redeems reward points</div>";
+echo "<div>&nbsp;</div><div>[Step 06] user redeems reward points</div>";
 $points = $db->userRedeemPoints($userRedeemPointsData);
 if ($points)
     echo "<div>>>seller published points: ".$points."</div>";
@@ -617,7 +621,7 @@ else
     echo "<div>>>failed to redeem reward points</div>";
 //*/
 
-echo "<div>[Final Step] close database connection</div>";
+echo "<div>&nbsp;</div><div>[Final Step] close database connection</div>";
 $db->close();
 
 ?>
