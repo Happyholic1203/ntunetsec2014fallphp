@@ -376,7 +376,7 @@ class MongoClass {
      *                          successfully, otherwire returns 0
      */
     private function handleUserPoints($param) {
-        echo "<div>>>>>>>handleUserPoints</div>";
+
         if ($param['action'] === 'add') { // Collection
 
             // Update points: increasing
@@ -412,7 +412,7 @@ class MongoClass {
         }
     }
 
-    // A helper function to fetch user current points
+
     /**
      * A helper function to fetch user current points
      * @param  string $id_string User id string
@@ -421,7 +421,7 @@ class MongoClass {
      *                               returns 0
      */
     private function getUserAvailablePoints($id_string) {
-        echo "<div>>>>>>>getUserAvailablePoints</div>";
+
         $mongo_id = new MongoID($id_string);
 
         // Get user current points
@@ -459,7 +459,7 @@ class MongoClass {
      *                               user
      */
     private function increasePoints($id_string, $points) {
-        echo "<div>>>>>>>increasePoints</div>";
+
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = intval($userCurrentPoints) + intval($points);
@@ -502,7 +502,7 @@ class MongoClass {
      *                               user
      */
     private function decreasePoints($id_string, $points) {
-        echo "<div>>>>>>>decreasePoints</div>";
+
         $mongo_id = new MongoID($id_string);
         $userCurrentPoints = $this->getUserAvailablePoints($id_string);
         $newAvailablePoints = intval($userCurrentPoints) - intval($points);
@@ -569,7 +569,7 @@ $userRedeemPointsData = array(
     'buyerid'   => '54bba48e7b3fe953008b4567',
     'sellerid'  => '54bbbaffc1293252008b4567',
     'action'    => 'redeem',
-    'numPoints' => '20',
+    'numPoints' => '10',
     'timestamp'  => '1421668108'
     );
 
