@@ -163,6 +163,7 @@ class MongoClass {
                         }
                     }
 
+                    // Check operation result
                     if (is_null($result['err'])) {
                         if (DEBUG) {
                             echo "<div>>>added a new user acoount</div>";
@@ -359,16 +360,16 @@ class MongoClass {
 // MongoClass Testing Procedure
 // Testing user data
 $newBuyer = array(
-    'email' => 'buyer3@example.com',
-    'password' => 'testing0000',
+    'email' => 'buyer4@example.com',
+    'password' => 'testing4444',
     'type' => 'buyer',
-    'publickey' => 'keytesting0000key'
+    'publickey' => 'keytesting4444key'
     );
 $newSeller = array(
-    'email' => 'seller3@example.com',
-    'password' => 'testing1111',
+    'email' => 'seller4@example.com',
+    'password' => 'testing4444',
     'type' => 'seller',
-    'publickey' => 'keytesting1111key'
+    'publickey' => 'keytesting4444key'
     );
 
 /* Testing database connection
@@ -382,7 +383,7 @@ $db->init();
 /* Testing user registration
 *///
 echo "<div>[Step 03] user registration</div>";
-$uid = $db->userRegistration($newSeller);
+$uid = $db->userRegistration($newBuyer);
 if ($uid)
     echo "<div>>>new user id is: ".$uid."</div>";
 else
