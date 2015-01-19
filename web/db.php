@@ -119,10 +119,9 @@ class MongoClass {
      *                        occupied, otherwise returns false.
      */
     private function isUserEmailOccupied($email) {
-        echo "<div>>>>>>test3</div>";
         $cursor = $this->userCollection->findOne(
             array('email' => $email ));
-        echo "<div>>>>>>test4</div>";
+
         if (!is_null($cursor)) return TRUE;
 
         return FALSE;
@@ -138,14 +137,14 @@ class MongoClass {
         // Check input registration array
         if (is_array($registration) && count($registration) === 4) {
             $required = array('email', 'password', 'type', 'publickey');
-            echo "<div>>>>>>test1</div>";
+
             // Check input registration array keys
             if (count(array_intersect_key(array_flip($required),
                 $registration)) === count($required)) {
-                echo "<div>>>>>>test2: ".$registration['email']."</div>";
+
                 // Check user email address
                 if (!$this->isUserEmailOccupied($registration['email'])) {
-                    echo "<div>>>>>>test5</div>";
+
                     if (DEBUG) {
                         echo "<div>>>new user email address is verified".
                              "</div>";
@@ -153,19 +152,18 @@ class MongoClass {
                     // Add basic user points
                     $registration['points'] = '0';
                     // Insert a new 'User' document
-                    $result = $this->userCollection->insert($registration,
-                        array("w" => '1'));
-
-                    if (is_null($result['err'])) {
+                    try {
+                        $result = $this->userCollection->insert($registration,
+                            array("w" => 1));
+                        print_r($result);
                         if (DEBUG) {
                             echo "<div>>>added a new user acoount</div>";
                         }
                         return $registration['_id'];
                     }
-                    else {
+                    catch (MongoCursorException $e) {
                         if (DEBUG) {
-                            echo "<div>>>operation error: ".$result['err'].
-                                 "</div>";
+                            echo "<div>>>operation error: $e</div>";
                         }
                     }
                 }
@@ -373,7 +371,7 @@ $db->init();
 /* Testing user registration
 *///
 echo "<div>[Step 03] user registration</div>";
-$uid = $db->userRegistration($newBuyer);
+$uid = $db->userRegistration($newSeller);
 if ($uid)
     echo "<div>>>new user id is: ".$uid."</div>";
 else
