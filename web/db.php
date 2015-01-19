@@ -358,13 +358,15 @@ class MongoClass {
 }
 
 // MongoClass Testing Procedure
-// Testing user data
+/* Testing user data
+///
 $newBuyer = array(
     'email' => 'buyer4@example.com',
     'password' => 'testing4444',
     'type' => 'buyer',
     'publickey' => 'keytesting4444key'
     );
+//*/
 $newSeller = array(
     'email' => 'seller4@example.com',
     'password' => 'testing4444',
@@ -381,7 +383,7 @@ $db->init();
 //*/
 
 /* Testing user registration
-*///
+///
 echo "<div>[Step 03] user registration</div>";
 $uid = $db->userRegistration($newBuyer);
 if ($uid)
@@ -391,15 +393,26 @@ else
 //*/
 
 /* Test user login authentication
+*///
 echo "<div>check user login authentication</div>";
 if ($db->userLoginAuth($newUser)) {
     echo "<div>user authenticated successfully</div>";
 }
 else
     echo "<div>user authenticated unsuccessfully</div>";
-*/
+//*/
 
-echo "<div>[Final&nbsp;&nbsp;] close database connection</div>";
+/* Test collection of reward points
+///
+TBD
+//*/
+
+/* Test redemption of reward points
+///
+TBD
+//*/
+
+echo "<div>[Final Step] close database connection</div>";
 $db->close();
 
 ?>
