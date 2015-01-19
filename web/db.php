@@ -431,20 +431,21 @@ class MongoClass {
         }
         catch (MongoConnectionException $e) {
             if (DEBUG) {
-                echo "<div>>>>>>>operation error: $e</div>";
+                echo "<div>>>>>>>>>operation error: $e</div>";
             }
         }
 
         // Check operation result
         if (!is_null($result)) {
             if (DEBUG) {
-                echo "<div>>>>>>>fetch user current points successfully</div>";
+                echo "<div>>>>>>>>>fetch user current points successfully".
+                     "</div>";
             }
             return intval($result['points']);
         }
         else {
             if (DEBUG) {
-                echo "<div>>>>>>>failed to fetch user current points</div>";
+                echo "<div>>>>>>>>>failed to fetch user current points</div>";
             }
             return 0;
         }
