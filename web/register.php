@@ -7,10 +7,10 @@ if (TESTING) { // Testing HTTP POST method handler
 ?>
 <div>[INPUT FORM]</div>
 <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
-    <input type="text" name="1mail" value="buyer5@example.com"><br>
-    <input type="text" name="password" value="55555"><br>
-    <input type="text" name="type" value="buyer"><br>
-    <input type="text" name="publickey" value="key55555key"><br>
+    email:<input type="text" name="email" value="buyer5@example.com"><br>
+    password:<input type="text" name="password" value="55555"><br>
+    type:<input type="text" name="type" value="buyer"><br>
+    publickey:<input type="text" name="publickey" value="key55555key"><br>
     <input type="submit" value="submit" name="Click">
 </form>
 <div>[TESTING]</div>
@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else {
             if (DEBUG) {
-                echo "<div>>>bad request with user input email</div>";
+                echo "<div>>>bad request with user input email field</div>";
             }
         }
     }
