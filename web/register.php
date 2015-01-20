@@ -36,47 +36,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<div>>>received user input data: ".json_encode($_POST).
                  "</div>"; // Show user inputs
         }
+        if (TESTING) unset($_POST['submit']);
 
-        // Fetches user input email address
-        $email = $_POST['email'] ?: 0;
-        if ($email) {
+        // Check POST fields
+        $required = array('email', 'password', 'type', 'publickey');
+        if (count(array_intersect_key(array_flip($required),
+                $_POST)) === count($required)) {
 
-            // Validates email address
-            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                if (DEBUG) {
-                    echo "<div>>>validated user input email successfully: ".
-                         $email."</div>"; // Show user email
-                }
+            // Fetches user input email address
+            $email = $_POST['email'] ?: 0;
+            if ($email) {
 
-                // Validates user type
-                $type = $_POST['email'] ?: 0;
-                if ($type === 'buyer' || $type === 'seller') {
-                    /*
-                    // User registration
-                    $db = new MongoClass();
-                    $db->init();
-                    $db->userRegistration();
-                    $db->close();
-                    */
+                // Validates email address
+                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    if (DEBUG) {
+                        echo "<div>>>validated user input email successfully: "
+                             .$email."</div>"; // Show user email
+                    }
+
+                    // Validates user type
+                    $type = $_POST['email'] ?: 0;
+                    if ($type === 'buyer' || $type === 'seller') {
+
+                        // User registration
+                        $db = new MongoClass();
+                        $db->init();
+                        $result = $db->userRegistration($_POST);
+                        $db->close();
+
+                        // set response
+                        if ($result) {
+                            $response['status'] = 'ok';
+                            $response['id'] = $result;
+                            $response['cert'] = getServerCertificats(
+                                $result, $type, $_POST['publickey']);
+                            if (DEBUG) {
+                                echo "<div>>>successful user registration".
+                                     "</div>";
+                            }
+                        }
+                        else {
+                            if (DEBUG) {
+                                echo "<div>>>user registration failed</div>";
+                            }
+                        }
+                    }
+                    else {
+                        if (DEBUG) {
+                            echo "<div>>>bad request with user input 'type' ".
+                                 "field</div>";
+                        }
+                    }
                 }
                 else {
                     if (DEBUG) {
-                        echo "<div>>>bad request with user input 'type' field".
-                             "</div>";
+                        echo "<div>>>failed to validate user input email: ".
+                             $email."</div>";
                     }
                 }
-                // output response
             }
             else {
                 if (DEBUG) {
-                    echo "<div>>>failed to validate user input email: ".
-                         $email."</div>";
+                    echo "<div>>>bad request with user input 'email' field".
+                         "</div>";
                 }
-            }
-        }
-        else {
-            if (DEBUG) {
-                echo "<div>>>bad request with user input 'email' field</div>";
             }
         }
     }
