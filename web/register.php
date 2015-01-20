@@ -1,9 +1,13 @@
 <?php
-if (TESTING) {// Testing HTTP POST method handler
+
+define('DEBUG', TRUE);
+define('TESTING', TRUE);
+
+if (TESTING) { // Testing HTTP POST method handler
 ?>
 <div>[INPUT FORM]</div>
 <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
-    <input type="text" name="email" value="buyer5example.com"><br>
+    <input type="text" name="1mail" value="buyer5@example.com"><br>
     <input type="text" name="password" value="55555"><br>
     <input type="text" name="type" value="buyer"><br>
     <input type="text" name="publickey" value="key55555key"><br>
@@ -12,9 +16,6 @@ if (TESTING) {// Testing HTTP POST method handler
 <div>[TESTING]</div>
 <?php
 }
-
-define('DEBUG', TRUE);
-define('TESTING', TRUE);
 
 /**
  * Requires MongoClass
@@ -35,15 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Fetches user input email address
         $email = $_POST['email'] ?: 0;
         if ($email){
-            // validates email address
+            // Validates email address
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if (DEBUG) {
                     echo "<div>>>validated user input email successfully: ".
                          $email."</div>"; // Show user email
                 }
-            // query user exists or not
-            // if user not exist, then register the user
-            // output response
+                // Validates user type
+                /*
+                // User registration
+                $db = new MongoClass();
+                $db->init();
+                $db->userRegistration();
+                $db->close();
+                */
+                // output response
             }
             else {
                 if (DEBUG) {
@@ -53,9 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     }
+    if (TESTING) {
 ?>
+<br />
 <div>[OUTPUT JSON]</div>
 <?php
+    }
     echo json_encode($response);
 }
 ?>
