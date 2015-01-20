@@ -9,7 +9,7 @@ if (TESTING) { // Testing HTTP POST method handler
 <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
     email:<input type="text" name="email" value="buyer5@example.com"><br>
     password:<input type="text" name="password" value="55555"><br>
-    type:<input type="text" name="type" value="buyper"><br>
+    type:<input type="text" name="type" value="buyer"><br>
     publickey:<input type="text" name="publickey" value="key55555key"><br>
     <input type="submit" value="submit" name="Click">
 </form>
