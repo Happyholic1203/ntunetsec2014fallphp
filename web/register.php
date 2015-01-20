@@ -22,7 +22,11 @@ if (TESTING) { // Testing HTTP POST method handler
  */
 require_once('./db.php');
 
-$response = array(); // response message
+$response = array(
+    'status' => 'rejected',
+    'id'     => NULL,
+    'cert'   => NULL
+    ); // response message
 
 // Checks whether a request is GET or POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
