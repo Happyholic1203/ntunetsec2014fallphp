@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // set response
                     if ($result) {
                         $response['status'] = 'ok';
-                        $response['id'] = $result;
+                        $response['id'] = $result['id'];
                         $response['cert'] = getServerCertificats(
                             $result, $type, $db->getUserPublickey($result));
                     }
