@@ -4,7 +4,7 @@ define('TESTING', TRUE);
 
 if (!empty($_POST))
 {
-    var_dump($_POST);
+    echo json_encode($_POST);
 }
 else {
     echo "{ }";
