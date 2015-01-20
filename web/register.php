@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 else {
                     if (DEBUG) {
                         echo "<div>>>bad request with user input 'type' field".
-                             "</div>"
+                             "</div>";
                     }
                 }
                 // output response
