@@ -9,7 +9,7 @@ if (TESTING) { // Testing HTTP POST method handler
 <form action="<?=$_SERVER['PHP_SELF']?>" method="POST">
     email:<input type="text" name="email" value="buyer5@example.com"><br>
     password:<input type="text" name="password" value="55555"><br>
-    type:<input type="text" name="type" value="buyer"><br>
+    type:<input type="text" name="type" value="jumper"><br>
     publickey:<input type="text" name="publickey" value="key55555key"><br>
     <input type="submit" value="submit" name="Click">
 </form>
@@ -39,21 +39,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Fetches user input email address
         $email = $_POST['email'] ?: 0;
-        if ($email){
+        if ($email) {
+
             // Validates email address
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 if (DEBUG) {
                     echo "<div>>>validated user input email successfully: ".
                          $email."</div>"; // Show user email
                 }
+
                 // Validates user type
-                /*
-                // User registration
-                $db = new MongoClass();
-                $db->init();
-                $db->userRegistration();
-                $db->close();
-                */
+                $type = $_POST['email'] ?: 0;
+                if ($type === 'buyer' || $type === 'seller') {
+                    /*
+                    // User registration
+                    $db = new MongoClass();
+                    $db->init();
+                    $db->userRegistration();
+                    $db->close();
+                    */
+                }
+                else {
+                    if (DEBUG) {
+                        echo "<div>>>bad request with user input 'type' field".
+                             "</div>"
+                    }
+                }
                 // output response
             }
             else {
@@ -65,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         else {
             if (DEBUG) {
-                echo "<div>>>bad request with user input email field</div>";
+                echo "<div>>>bad request with user input 'email' field</div>";
             }
         }
     }
