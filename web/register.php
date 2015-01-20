@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "<div>>>received user input data: ".json_encode($_POST).
                  "</div>"; // Show user inputs
         }
-        if (TESTING) unset($_POST['submit']);
+        if (TESTING) unset($_POST['Click']);
 
         // Check POST fields
         $required = array('email', 'password', 'type', 'publickey');
