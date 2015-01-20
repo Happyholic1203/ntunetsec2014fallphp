@@ -59,6 +59,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         }
+        else {
+            if (DEBUG) {
+                echo "<div>>>bad request with user input email</div>";
+            }
+        }
     }
     if (TESTING) {
 ?>
@@ -66,6 +71,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <div>[OUTPUT JSON]</div>
 <?php
     }
-    echo json_encode($response);
-}
+    echo json_encode($response); // response message in JSON
+} // end of POST checks
 ?>
