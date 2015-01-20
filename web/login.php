@@ -2,6 +2,7 @@
 
 define('DEBUG', FALSE);
 define('TESTING', FALSE);
+
 if (TESTING) { // Testing HTTP POST method handler
 ?>
 <div>[INPUT FORM]</div>
