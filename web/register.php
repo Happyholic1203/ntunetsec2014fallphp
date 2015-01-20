@@ -1,7 +1,7 @@
 <?php
 
 define('DEBUG', FALSE);
-define('TESTING', TRUE);
+define('TESTING', FALSE);
 
 if (TESTING) { // Testing HTTP POST method handler
 ?>
@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         // set response
                         if ($result) {
-                            echo ">>result: ".$result;
+
                             $response['status'] = 'ok';
                             $response['id'] = $result;
                             $response['cert'] = getServerCertificats(
