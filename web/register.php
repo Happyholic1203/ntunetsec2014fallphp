@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
                     // Validates user type
-                    $type = $_POST['email'] ?: 0;
+                    $type = $_POST['type'] ?: 0;
                     if ($type === 'buyer' || $type === 'seller') {
 
                         // User registration
