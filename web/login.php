@@ -43,7 +43,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Validates email address
             if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+
                 // Validates user type
+                $type = $_POST['type'] ?: 0;
                 if ($type === 'buyer' || $type === 'seller') {
                     // User authentication
                     $db = new MongoClass();
