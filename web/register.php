@@ -1,7 +1,7 @@
 <?php
 
-define('DEBUG', TRUE);
-define('TESTING', TRUE);
+define('DEBUG', FALSE);
+define('TESTING', FALSE);
 
 if (TESTING) { // Testing HTTP POST method handler
 ?>
