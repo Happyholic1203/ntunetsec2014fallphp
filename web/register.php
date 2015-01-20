@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 echo "<div>>>user registration failed</div>";
                             }
                         }
-                        $db->close();
+
                     }
                     else {
                         if (DEBUG) {
@@ -111,5 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php
     }
     echo json_encode($response); // response message in JSON
+    $db->close(); // TBD :error
 } // end of POST checks
 ?>
