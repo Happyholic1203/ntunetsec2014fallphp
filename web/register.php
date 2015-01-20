@@ -66,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         // set response
                         if ($result) {
+                            echo ">>result: ".$result;
                             $response['status'] = 'ok';
                             $response['id'] = $result;
                             $response['cert'] = getServerCertificats(
