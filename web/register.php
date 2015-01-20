@@ -62,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $db = new MongoClass();
                         $db->init();
                         $result = $db->userRegistration($_POST);
-                        $db->close();
 
                         // set response
                         if ($result) {
@@ -81,6 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 echo "<div>>>user registration failed</div>";
                             }
                         }
+                        $db->close();
                     }
                     else {
                         if (DEBUG) {

@@ -4,6 +4,21 @@ define("DEBUG", FALSE);
 define("TESTING", FALSE);
 
 /**
+ * [getServerCertificats description]
+ * @param  string $id        User id
+ * @param  string $type      User type
+ * @param  string $publickey User publickey
+ * @return string            Certificates
+ */
+function getServerCertificats($id, $type, $publickey) {
+    $split = ",";
+    $ServerSignature = "IAMASERVERSIGNATURE";
+    $cert = $id.$split.$type.$split.$publickey."|".$ServerSignature;
+    return $cert;
+}
+
+
+/**
  * Declaration of constants for MongoDB
  */
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
@@ -105,7 +120,8 @@ class MongoClass {
     public function close() {
         // Close mongodb connection
         if ($this->connection) {
-            $closed = $this->$connection->close(TRUE); //TBD: potential error
+            $hash = $this->$connection->getConnections()[0]['hash'];
+            $closed = $this->$connection->close($hash); //TBD: potential error
             if (DEBUG) {
                 echo $closed ?
                 "<div>>>close database connection successfully</div>" :
