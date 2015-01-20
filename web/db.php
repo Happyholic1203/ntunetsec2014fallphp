@@ -1,13 +1,14 @@
 <?php
 
+define("DEBUG", FALSE);
+define("TESTING", FALSE);
+
 /**
  * Declaration of constants for MongoDB
  */
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
 define("MONGODB_USER_COLLECTION", 'User');
 define("MONGODB_RECORD_COLLECTION", 'Record');
-define("DEBUG", FALSE);
-define("TESTING", FALSE);
 
 /**
  * A class for handling interaction with MongoDB
