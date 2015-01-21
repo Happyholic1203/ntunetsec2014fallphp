@@ -19,8 +19,8 @@ if (TESTING) { // Testing HTTP POST method handler
 /**
  * Requires MongoClass
  */
-require_once('core/db.php');
-require_once('core/security.php');
+require_once('db.php');
+require_once('security.php');
 
 $response = array(
     'status' => 'rejected',
