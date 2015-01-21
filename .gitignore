@@ -1,2 +1,2 @@
-vendor/
-.env
+*.sublime-*
+*.DS_Store

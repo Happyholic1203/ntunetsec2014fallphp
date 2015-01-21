@@ -19,7 +19,8 @@ if (TESTING) { // Testing HTTP POST method handler
 /**
  * Requires MongoClass
  */
-require_once('./db.php');
+require_once('core/db.php');
+require_once('core/security.php');
 
 $response = array(
     'status' => 'rejected',
@@ -57,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($result) {
                         $response['status'] = 'ok';
                         $response['id'] = $result;
-                        $response['cert'] = getServerCertificats(
+                        $response['cert'] = Security::issueCertificateFor(
                             $result, $type, $db->getUserPublickey($result));
                     }
                 }

@@ -20,7 +20,8 @@ if (TESTING) { // Testing HTTP POST method handler
 /**
  * Requires MongoClass
  */
-require_once('./db.php');
+require_once('core/db.php');
+require_once('core/security.php');
 
 $response = array(
     'status' => 'rejected',
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             $response['status'] = 'ok';
                             $response['id'] = $result;
-                            $response['cert'] = getServerCertificats(
+                            $response['cert'] = Security::issueCertificateFor(
                                 $result, $type, $_POST['publickey']);
                             if (DEBUG) {
                                 echo "<div>>>successful user registration".

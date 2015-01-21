@@ -1,22 +1,8 @@
 <?php
 
+require_once('crypto.php');
 define("DEBUG", FALSE);
 define("TESTING", FALSE);
-
-/**
- * [getServerCertificats description]
- * @param  string $id        User id
- * @param  string $type      User type
- * @param  string $publickey User publickey
- * @return string            Certificates
- */
-function getServerCertificats($id, $type, $publickey) {
-    $split = ",";
-    $ServerSignature = "IAMASERVERSIGNATURE";
-    $cert = $id.$split.$type.$split.$publickey."|".$ServerSignature;
-    return $cert;
-}
-
 
 /**
  * Declaration of constants for MongoDB
