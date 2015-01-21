@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $db = new MongoClass();
                         $db->init();
                         $result = $db->userRegistration($_POST);
-                        $id = $result['id'];
+                        $id = (string) $result['_id'];
 
                         // set response
                         if ($result) {

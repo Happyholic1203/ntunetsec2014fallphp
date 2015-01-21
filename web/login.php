@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $db = new MongoClass();
                     $db->init();
                     $result = $db->userLoginAuth($_POST);
-                    $id = $result['id'];
+                    $id = (string) $result['_id'];
 
                     // set response
                     if ($result) {
