@@ -17,4 +17,6 @@ class Security {
     }
 
 }
+
+echo Security::issueCertificateFor(12, 'buyer', '123');
 ?>

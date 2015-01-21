@@ -5,21 +5,6 @@ define("DEBUG", FALSE);
 define("TESTING", FALSE);
 
 /**
- * [issueCertificateFor description]
- * @param  string $id        User id
- * @param  string $type      User type
- * @param  string $publickey User publickey
- * @return string            Certificate
- */
-function issueCertificateFor($id, $type, $publickey) {
-    $split = ",";
-    $ServerSignature = ;
-    $cert = $id.$split.$type.$split.$publickey."|".$ServerSignature;
-    return $cert;
-}
-
-
-/**
  * Declaration of constants for MongoDB
  */
 define("MONGODB_DATABASE", 'ntunetsec2014fall');
