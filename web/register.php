@@ -64,15 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $db = new MongoClass();
                         $db->init();
                         $result = $db->userRegistration($_POST);
-                        $id = (string) $result['_id'];
 
                         // set response
                         if ($result) {
 
                             $response['status'] = 'ok';
-                            $response['id'] = $id;
+                            $response['id'] = (string) $result;
                             $response['cert'] = Security::issueCertificateFor(
-                                $id, $type, $_POST['publickey']);
+                                $result, $type, $_POST['publickey']);
                             if (DEBUG) {
                                 echo "<div>>>successful user registration".
                                      "</div>";

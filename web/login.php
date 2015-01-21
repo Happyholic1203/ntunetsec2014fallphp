@@ -53,14 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $db = new MongoClass();
                     $db->init();
                     $result = $db->userLoginAuth($_POST);
-                    $id = (string) $result['_id'];
 
                     // set response
                     if ($result) {
                         $response['status'] = 'ok';
-                        $response['id'] = $id;
+                        $response['id'] = (string) $result;
                         $response['cert'] = Security::issueCertificateFor(
-                            $id, $type, $db->getUserPublickey($result));
+                            (string) $result, $type, $db->getUserPublickey($result));
                     }
                 }
             }
