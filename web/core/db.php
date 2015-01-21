@@ -1,6 +1,6 @@
 <?php
 
-require_once('crypto.php');
+require_once(WEB_ROOT. 'crypto.php');
 define("DEBUG", FALSE);
 define("TESTING", FALSE);
 

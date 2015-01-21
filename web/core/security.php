@@ -1,6 +1,5 @@
 <?php
-require_once('config.php');
-require_once('crypto.php');
+require_once(WEB_ROOT. 'crypto.php');
 
 class Security {
     /**
@@ -18,5 +17,5 @@ class Security {
 
 }
 
-echo Security::issueCertificateFor(12, 'buyer', '123');
+// echo Security::issueCertificateFor(12, 'buyer', '123');
 ?>
